@@ -41,7 +41,14 @@ export default function Home() {
       try {
         const fetchedProducts = await client.fetch(allProductsQuery);
         setFeaturedProducts(fetchedProducts.slice(0, 8));
-        setHeroProducts(fetchedProducts.slice(8, 13)); // Use next 5 products for hero
+        
+        // Find products marked as hero, fallback to first 5 if none found
+        const heroes = fetchedProducts.filter((p: any) => p.isHero);
+        if (heroes.length > 0) {
+          setHeroProducts(heroes);
+        } else {
+          setHeroProducts(fetchedProducts.slice(8, 13)); 
+        }
       } catch (err) {
         console.error(err);
       }

@@ -10,7 +10,8 @@ export const allProductsQuery = groq`
     "categoryId": category,
     "subCategory": subCategory,
     "sizingType": sizingType,
-    "collection": collection
+    "collection": collection,
+    "isHero": isHero
   }
 `;
 
@@ -42,6 +43,7 @@ export const productByIdQuery = groq`
     "categoryId": category,
     "subCategory": subCategory,
     "sizingType": sizingType,
-    "collection": collection
+    "collection": collection,
+    "isHero": isHero
   }
 `;

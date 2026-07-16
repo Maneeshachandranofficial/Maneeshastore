@@ -85,5 +85,12 @@ export default defineType({
       },
       initialValue: 'standard',
     }),
+    defineField({
+      name: 'isHero',
+      title: 'Show in Homepage Hero Carousel?',
+      type: 'boolean',
+      description: 'Turn this on to feature this product in the sliding hero images on the homepage.',
+      initialValue: false,
+    }),
   ],
 })
