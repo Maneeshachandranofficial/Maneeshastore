@@ -35,18 +35,42 @@ export default defineType({
     }),
     defineField({
       name: 'category',
-      title: 'Category (e.g. bride, ethnic, grooms)',
+      title: 'Category',
       type: 'string',
+      options: {
+        list: [
+          { title: 'Bride', value: 'bride' },
+          { title: 'Groom', value: 'groom' },
+          { title: 'Kids', value: 'kids' },
+        ]
+      }
     }),
     defineField({
       name: 'subCategory',
-      title: 'Sub Category (e.g. men, women, girls, boys)',
+      title: 'Sub Category',
       type: 'string',
+      options: {
+        list: [
+          { title: 'Adult', value: 'adult' },
+          { title: 'Kids', value: 'kids' },
+          { title: 'Men', value: 'men' },
+          { title: 'Women', value: 'women' },
+        ]
+      }
     }),
     defineField({
       name: 'collection',
-      title: 'Collection (e.g. onam-2026-chaayam)',
+      title: 'Collection',
       type: 'string',
+      options: {
+        list: [
+          { title: 'None', value: '' },
+          { title: 'Onam 2026 Chaayam', value: 'onam-2026-chaayam' },
+          { title: 'Eves Garden 2024', value: 'eves-garden-2024' },
+          { title: 'Parinaya 2026', value: 'parinaya-2026' },
+          { title: 'Signature Couture', value: 'signature-couture' },
+        ]
+      }
     }),
     defineField({
       name: 'sizingType',
