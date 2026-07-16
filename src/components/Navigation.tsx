@@ -146,8 +146,8 @@ export default function Navigation() {
               </span>
               <div className="absolute top-full left-0 hidden group-hover:block pt-4">
                 <div className="mac-glass rounded-2xl p-4 flex flex-col gap-4 w-56">
-                   <Link href="/category/onam-2026" className="text-xs hover:text-maroon transition-colors">Onam '26</Link>
-                   <Link href="/category/eves-garden" className="text-xs hover:text-maroon transition-colors">Eves Garden '24</Link>
+                   <Link href="/category/onam-2026-chaayam" className="text-xs hover:text-maroon transition-colors">Onam '26</Link>
+                   <Link href="/category/eves-garden-2024" className="text-xs hover:text-maroon transition-colors">Eves Garden '24</Link>
                    <Link href="/category/parinaya-2026" className="text-xs hover:text-maroon transition-colors">Parinaya '26</Link>
                 </div>
               </div>

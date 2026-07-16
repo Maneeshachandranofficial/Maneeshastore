@@ -40,8 +40,8 @@ export default function Home() {
     async function fetchProducts() {
       try {
         const fetchedProducts = await client.fetch(allProductsQuery);
-        setFeaturedProducts(fetchedProducts.slice(0, 4));
-        setHeroProducts(fetchedProducts.slice(4, 9)); // Use next 5 products for hero
+        setFeaturedProducts(fetchedProducts.slice(0, 8));
+        setHeroProducts(fetchedProducts.slice(8, 13)); // Use next 5 products for hero
       } catch (err) {
         console.error(err);
       }
