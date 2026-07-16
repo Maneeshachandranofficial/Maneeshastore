@@ -1,0 +1,319 @@
+diff --git a/src/components/CategoryPage.tsx b/src/components/CategoryPage.tsx
+index a123456..b654321 100644
+--- a/src/components/CategoryPage.tsx
++++ b/src/components/CategoryPage.tsx
+@@ -5,14 +5,7 @@ import { useState, useEffect, useRef } from 'react';
+ import Link from 'next/link';
+ import { X } from 'lucide-react';
+ import { useCart } from '@/context/CartContext';
+-
+-export interface Product {
+-  id: number;
+-  src: string;
+-  title: string;
+-  price: string;
+-  sizes?: string[];
+-}
++import { Product } from '@/lib/products';
+ 
+ interface CategoryPageProps {
+   label: string;
+
+diff --git a/src/app/bridal/page.tsx b/src/app/bridal/page.tsx
+index a123456..b654321 100644
+--- a/src/app/bridal/page.tsx
++++ b/src/app/bridal/page.tsx
+@@ -1,20 +1,9 @@
+ import CategoryPage from '@/components/CategoryPage';
+-import type { Product } from '@/components/CategoryPage';
+-
+-const bridalProducts: Product[] = [
+-  { id: 1, src: '/drive_images_categorised/bridal_1.png', title: 'The Royal Red', price: '₹ 85,000', sizes: ['S', 'M', 'L', 'XL'] },
+-  { id: 2, src: '/drive_images_categorised/bridal_2.png', title: 'Vintage Rose', price: '₹ 95,000', sizes: ['S', 'M', 'L'] },
+-  { id: 3, src: '/drive_images_categorised/bridal_3.png', title: 'Pearl Encrusted', price: '₹ 1,15,000' },
+-  { id: 4, src: '/drive_images_categorised/bridal_4.png', title: 'The Parinaya Saree', price: '₹ 1,15,000', sizes: ['M', 'L'] },
+-  { id: 5, src: '/drive_images_categorised/bridal_5.png', title: 'Ivory Dreaming', price: '₹ 1,25,000' },
+-  { id: 6, src: '/drive_images_categorised/bridal_6.png', title: 'Kasavu Bridal Set', price: '₹ 65,000', sizes: ['S', 'M', 'L', 'XL'] },
+-  { id: 7, src: '/drive_images_categorised/bridal_7.png', title: 'Ivory Lehenga', price: '₹ 95,000', sizes: ['S', 'M', 'L'] },
+-  { id: 8, src: '/drive_images_categorised/bridal_8.png', title: 'Gold Tissue Saree', price: '₹ 78,000' },
+-  { id: 9, src: '/drive_images_categorised/bridal_9.png', title: 'Regal Crimson', price: '₹ 1,05,000', sizes: ['M', 'L', 'XL'] },
+-  { id: 10, src: '/drive_images_categorised/bridal_10.png', title: 'Temple Gold Set', price: '₹ 88,000', sizes: ['S', 'M', 'L'] },
+-  { id: 11, src: '/drive_images_categorised/bridal_11.png', title: 'Blush Bridal', price: '₹ 72,000' },
+-  { id: 12, src: '/drive_images_categorised/bridal_12.png', title: 'Royal Maroon', price: '₹ 1,35,000', sizes: ['M', 'L'] },
+-];
++import { getAllProducts } from '@/lib/products';
++
++const bridalProducts = getAllProducts().filter(p =>
++  p.src.includes('/bridal_')
++);
+ 
+ export default function BridalPage() {
+   return (
+
+diff --git a/src/app/ethnic/page.tsx b/src/app/ethnic/page.tsx
+index a123456..b654321 100644
+--- a/src/app/ethnic/page.tsx
++++ b/src/app/ethnic/page.tsx
+@@ -1,14 +1,9 @@
+ import CategoryPage from '@/components/CategoryPage';
+-import type { Product } from '@/components/CategoryPage';
+-
+-const ethnicProducts: Product[] = [
+-  { id: 1, src: '/drive_images_categorised/ethnic_1.png', title: 'Golden Threads', price: '₹ 42,000', sizes: ['S', 'M', 'L', 'XL'] },
+-  { id: 2, src: '/drive_images_categorised/ethnic_2.png', title: 'Kanchipuram Silk', price: '₹ 55,000', sizes: ['M', 'L'] },
+-  { id: 3, src: '/drive_images_categorised/ethnic_3.jpg', title: 'Temple Borders', price: '₹ 48,000', sizes: ['S', 'M', 'L'] },
+-  { id: 4, src: '/drive_images_categorised/ethnic_4.png', title: 'Sage Linen Kurta', price: '₹ 38,000', sizes: ['S', 'M', 'L', 'XL'] },
+-  { id: 5, src: '/drive_images_categorised/ethnic_5.png', title: 'Ivory Chanderi Saree', price: '₹ 52,000', sizes: ['M', 'L'] },
+-  { id: 6, src: '/drive_images_categorised/ethnic_6.jpg', title: 'Maroon Muse Kurta', price: '₹ 36,000', sizes: ['S', 'M', 'L', 'XL'] },
+-];
++import { getAllProducts } from '@/lib/products';
++
++const ethnicProducts = getAllProducts().filter(p =>
++  p.src.includes('/ethnic_')
++);
+ 
+ export default function EthnicPage() {
+   return (
+
+diff --git a/src/app/kids/page.tsx b/src/app/kids/page.tsx
+index a123456..b654321 100644
+--- a/src/app/kids/page.tsx
++++ b/src/app/kids/page.tsx
+@@ -1,10 +1,9 @@
+ import CategoryPage from '@/components/CategoryPage';
+-import type { Product } from '@/components/CategoryPage';
+-
+-const kidsProducts: Product[] = [
+-  { id: 1, src: '/drive_images_categorised/kids_1.png', title: 'Festive Mini', price: '₹ 12,000', sizes: ['2Y', '4Y', '6Y', '8Y'] },
+-  { id: 2, src: '/drive_images_categorised/kids_2.png', title: 'Little Prince', price: '₹ 15,000', sizes: ['2Y', '4Y', '6Y', '8Y'] },
+-];
++import { getAllProducts } from '@/lib/products';
++
++const kidsProducts = getAllProducts().filter(p =>
++  p.src.includes('/kids_')
++);
+ 
+ export default function KidsPage() {
+   return (
+
+diff --git b/src/app/semi-party/page.tsx b/src/app/semi-party/page.tsx
+index a123456..b654321 100644
+--- a/src/app/semi-party/page.tsx
++++ b/src/app/semi-party/page.tsx
+@@ -1,14 +1,9 @@
+ import CategoryPage from '@/components/CategoryPage';
+-import type { Product } from '@/components/CategoryPage';
+-
+-const semiPartyProducts: Product[] = [
+-  { id: 1, src: '/drive_images_categorised/semi_party_1.png', title: 'Midnight Velvet', price: '₹ 28,000', sizes: ['S', 'M', 'L'] },
+-  { id: 2, src: '/drive_images_categorised/semi_party_2.jpg', title: 'Emerald Drape', price: '₹ 32,000', sizes: ['M', 'L', 'XL'] },
+-  { id: 3, src: '/drive_images_categorised/semi_party_3.jpg', title: 'Sapphire Silhouette', price: '₹ 35,000', sizes: ['S', 'M', 'L'] },
+-  { id: 4, src: '/drive_images_categorised/semi_party_4.png', title: 'Rose Quartz Dress', price: '₹ 25,000', sizes: ['S', 'M', 'L', 'XL'] },
+-  { id: 5, src: '/drive_images_categorised/semi_party_5.jpg', title: 'Obsidian Kurta Set', price: '₹ 22,000', sizes: ['M', 'L'] },
+-  { id: 6, src: '/drive_images_categorised/semi_party_6.jpg', title: 'Champagne Ruffles', price: '₹ 45,000', sizes: ['S', 'M'] },
+-];
++import { getAllProducts } from '@/lib/products';
++
++const semiPartyProducts = getAllProducts().filter(p =>
++  p.src.includes('/semi_party_')
++);
+ 
+ export default function SemiPartyPage() {
+   return (
+
+diff --git a/src/app/collections/page.tsx b/src/app/collections/page.tsx
+index a123456..b654321 100644
+--- a/src/app/collections/page.tsx
++++ b/src/app/collections/page.tsx
+@@ -1,14 +1,9 @@
+ import CategoryPage from '@/components/CategoryPage';
+-import type { Product } from '@/components/CategoryPage';
+-
+-const collectionProducts: Product[] = [
+-  { id: 1, src: '/drive_images_categorised/collections_1.png', title: 'Onam 2026 Chaayam', price: '₹ 85,000', sizes: ['S', 'M', 'L'] },
+-  { id: 2, src: '/drive_images_categorised/collections_2.png', title: 'Eves Garden 2024', price: '₹ 95,000', sizes: ['S', 'M', 'L'] },
+-  { id: 3, src: '/drive_images_categorised/collections_3.png', title: 'Parinaya 2026', price: '₹ 1,15,000' },
+-  { id: 4, src: '/drive_images_categorised/collections_4.png', title: 'Gilded Lilies', price: '₹ 75,000', sizes: ['S', 'M', 'L', 'XL'] },
+-  { id: 5, src: '/drive_images_categorised/collections_5.jpg', title: 'Ruby Reverie', price: '₹ 82,000', sizes: ['M', 'L'] },
+-  { id: 6, src: '/drive_images_categorised/collections_6.jpg', title: 'Azure Dreams', price: '₹ 90,000', sizes: ['S', 'M', 'L'] },
+-];
++import { getAllProducts } from '@/lib/products';
++
++const collectionProducts = getAllProducts().filter(p =>
++  p.src.includes('/collections_')
++);
+ 
+ export default function CollectionsPage() {
+   return (
+
+diff --git a/src/app/lookbook/page.tsx b/src/app/lookbook/page.tsx
+index a123456..b654321 100644
+--- a/src/app/lookbook/page.tsx
++++ b/src/app/lookbook/page.tsx
+@@ -7,22 +7,20 @@ import { X } from 'lucide-react';
+ import Link from 'next/link';
+ import { useCart } from '@/context/CartContext';
++import { getProductById } from '@/lib/products';
+ 
+ if (typeof window !== 'undefined') {
+   gsap.registerPlugin(ScrollTrigger);
+ }
+ 
+-const lookbookImages = [
+-  { id: 1, src: '/drive_images_categorised/bridal_1.png', category: 'Bridal', title: 'The Royal Red', price: '₹ 85,000' },
+-  { id: 2, src: '/drive_images_categorised/ethnic_1.png', category: 'Ethnic', title: 'Golden Threads', price: '₹ 42,000' },
+-  { id: 3, src: '/drive_images_categorised/collections_1.png', category: 'Collections', title: 'Summer Velvet', price: '₹ 38,000' },
+-  { id: 4, src: '/drive_images_categorised/bridal_2.png', category: 'Bridal', title: 'Vintage Rose', price: '₹ 95,000' },
+-  { id: 5, src: '/drive_images_categorised/ethnic_2.png', category: 'Ethnic', title: 'Kanchipuram Silk', price: '₹ 55,000' },
+-  { id: 6, src: '/drive_images_categorised/collections_2.png', category: 'Collections', title: 'Monsoon Hue', price: '₹ 28,000' },
+-  { id: 7, src: '/drive_images_categorised/bridal_3.png', category: 'Bridal', title: 'Pearl Encrusted', price: '₹ 1,15,000' },
+-  { id: 8, src: '/drive_images_categorised/ethnic_3.jpg', category: 'Ethnic', title: 'Temple Borders', price: '₹ 48,000' },
+-  { id: 9, src: '/drive_images_categorised/bridal_4.png', category: 'Bridal', title: 'Ruby Embellishments', price: '₹ 65,000' },
+-  { id: 10, src: '/drive_images_categorised/collections_3.png', category: 'Collections', title: 'Autumn Grace', price: '₹ 32,000' },
+-  { id: 11, src: '/drive_images_categorised/bridal_5.png', category: 'Bridal', title: 'Ivory Dreaming', price: '₹ 1,25,000' },
+-  { id: 12, src: '/drive_images_categorised/ethnic_4.png', category: 'Ethnic', title: 'Banarasi Magic', price: '₹ 52,000' },
+-];
++const lookbookProductIds = [1, 13, 27, 2, 14, 28, 3, 15, 4, 29, 5, 16];
++
++const lookbookImages = lookbookProductIds.map(id => {
++  const p = getProductById(id)!;
++  let lookbookCat = 'Collections';
++  if (p.src.includes('bridal')) lookbookCat = 'Bridal';
++  else if (p.src.includes('ethnic')) lookbookCat = 'Ethnic';
++  return {
++    id: p.id,
++    src: p.src,
++    title: p.title,
++    price: p.price,
++    category: lookbookCat
++  };
++});
+ 
+ const categories = ['All', 'Bridal', 'Ethnic', 'Collections'];
+
+diff --git a/src/app/page.tsx b/src/app/page.tsx
+index a123456..b654321 100644
+--- a/src/app/page.tsx
++++ b/src/app/page.tsx
+@@ -5,6 +5,7 @@ import gsap from 'gsap';
+ import { ScrollTrigger } from 'gsap/ScrollTrigger';
+ import { useCart } from '@/context/CartContext';
++import { getProductById } from '@/lib/products';
+ 
+ gsap.registerPlugin(ScrollTrigger);
+ 
+@@ -294,28 +295,28 @@ export default function Home() {
+           {/* Bridal Products — Price on Request */}
+           <div className="product-grid fade-up" style={{ marginTop: '4rem' }}>
+-            <a href="#" onClick={(e) => handleProductClick(e, { src: '/drive_images_categorised/bridal_4.png', title: 'The Parinaya Saree', price: '₹ 1,15,000' })} className="product-card">
++            <a href="#" onClick={(e) => handleProductClick(e, getProductById(4))} className="product-card">
+               <div className="product-img">
+                 <img src="/drive_images_categorised/bridal_4.png" alt="The Parinaya Saree" />
+               </div>
+               <h4>The Parinaya Saree</h4>
+               <p className="price">₹ 1,15,000</p>
+             </a>
+-            <a href="#" onClick={(e) => handleProductClick(e, { src: '/drive_images_categorised/bridal_1.png', title: 'Royal Sherwani', price: '₹ 85,000' })} className="product-card">
++            <a href="#" onClick={(e) => handleProductClick(e, getProductById(1))} className="product-card">
+               <div className="collection-image fade-up" style={{ animationDelay: '0.2s', position: 'relative' }}>
+                 <img src="/drive_images_categorised/bridal_1.png" alt="Bridal Couture" />
+               </div>
+               <h4>Royal Sherwani</h4>
+               <p className="price">₹ 85,000</p>
+             </a>
+-            <a href="#" onClick={(e) => handleProductClick(e, { src: '/drive_images_categorised/bridal_6.png', title: 'Kasavu Bridal Set', price: '₹ 65,000' })} className="product-card">
++            <a href="#" onClick={(e) => handleProductClick(e, getProductById(6))} className="product-card">
+               <div className="product-img">
+                 <img src="/drive_images_categorised/bridal_6.png" alt="Kasavu Bridal Set" />
+               </div>
+               <h4>Kasavu Bridal Set</h4>
+               <p className="price">₹ 65,000</p>
+             </a>
+-            <a href="#" onClick={(e) => handleProductClick(e, { src: '/drive_images_categorised/bridal_7.png', title: 'Ivory Lehenga', price: '₹ 95,000' })} className="product-card">
++            <a href="#" onClick={(e) => handleProductClick(e, getProductById(7))} className="product-card">
+               <div className="product-img">
+                 <img src="/drive_images_categorised/bridal_7.png" alt="Ivory Lehenga" />
+               </div>
+               <h4>Ivory Lehenga</h4>
+               <p className="price">₹ 95,000</p>
+             </a>
+           </div>
+         </section>
+ 
+         {/* ========== ETHNIC WEAR ========== */}
+         <section id="ethnic" className="section-padding">
+           ...
+           {/* Ethnic Products — with prices */}
+           <div className="product-grid fade-up" style={{ marginTop: '4rem' }}>
+-            <a href="#" onClick={(e) => handleProductClick(e, { src: '/drive_images_categorised/ethnic_1.png', title: 'Rose Aura Set', price: '₹ 42,000' })} className="product-card">
++            <a href="#" onClick={(e) => handleProductClick(e, getProductById(13))} className="product-card">
+               <div className="collection-image fade-up" style={{ animationDelay: '0.2s', position: 'relative' }}>
+                 <img src="/drive_images_categorised/ethnic_1.png" alt="Ethnic Collection" />
+               </div>
+               <h4>Rose Aura Set</h4>
+               <p className="price">₹ 42,000</p>
+             </a>
+-            <a href="#" onClick={(e) => handleProductClick(e, { src: '/drive_images_categorised/ethnic_4.png', title: 'Sage Linen Kurta', price: '₹ 38,000' })} className="product-card">
++            <a href="#" onClick={(e) => handleProductClick(e, getProductById(16))} className="product-card">
+               <div className="product-img">
+                 <img src="/drive_images_categorised/ethnic_4.png" alt="Sage Linen Kurta" />
+               </div>
+               <h4>Sage Linen Kurta</h4>
+               <p className="price">₹ 38,000</p>
+             </a>
+-            <a href="#" onClick={(e) => handleProductClick(e, { src: '/drive_images_categorised/ethnic_5.png', title: 'Ivory Chanderi Saree', price: '₹ 52,000' })} className="product-card">
++            <a href="#" onClick={(e) => handleProductClick(e, getProductById(17))} className="product-card">
+               <div className="product-img">
+                 <img src="/drive_images_categorised/ethnic_5.png" alt="Ivory Chanderi Saree" />
+               </div>
+               <h4>Ivory Chanderi Saree</h4>
+               <p className="price">₹ 52,000</p>
+             </a>
+-            <a href="#" onClick={(e) => handleProductClick(e, { src: '/drive_images_categorised/ethnic_6.jpg', title: 'Maroon Muse Kurta', price: '₹ 36,000' })} className="product-card">
++            <a href="#" onClick={(e) => handleProductClick(e, getProductById(18))} className="product-card">
+               <div className="product-img">
+                 <img src="/drive_images_categorised/ethnic_6.jpg" alt="Maroon Muse Kurta" />
+               </div>
+               <h4>Maroon Muse Kurta</h4>
+               <p className="price">₹ 36,000</p>
+             </a>
+           </div>
+         </section>
+ 
+         {/* ========== SEMI PARTY WEAR ========== */}
+         <section id="semi-party" className="section-padding section-warm">
+           ...
+           <div className="product-grid fade-up" style={{ marginTop: '3rem' }}>
+-            <a href="#" onClick={(e) => handleProductClick(e, { src: '/drive_images_categorised/semi_party_1.png', title: 'Midnight Velvet Set', price: '₹ 48,000' })} className="product-card">
++            <a href="#" onClick={(e) => handleProductClick(e, getProductById(21))} className="product-card">
+               <div className="product-img">
+                 <img src="/drive_images_categorised/semi_party_1.png" alt="Midnight Velvet Set" />
+               </div>
+               <h4>Midnight Velvet Set</h4>
+               <p className="price">₹ 48,000</p>
+             </a>
+-            <a href="#" onClick={(e) => handleProductClick(e, { src: '/drive_images_categorised/semi_party_2.jpg', title: 'Blush Sequin Drape', price: '₹ 35,000' })} className="product-card">
++            <a href="#" onClick={(e) => handleProductClick(e, getProductById(22))} className="product-card">
+               <div className="product-img">
+                 <img src="/drive_images_categorised/semi_party_2.jpg" alt="Blush Sequin Drape" />
+               </div>
+               <h4>Blush Sequin Drape</h4>
+               <p className="price">₹ 35,000</p>
+             </a>
+-            <a href="#" onClick={(e) => handleProductClick(e, { src: '/drive_images_categorised/semi_party_3.jpg', title: 'Emerald Cocktail Gown', price: '₹ 55,000' })} className="product-card">
++            <a href="#" onClick={(e) => handleProductClick(e, getProductById(23))} className="product-card">
+               <div className="product-img">
+                 <img src="/drive_images_categorised/semi_party_3.jpg" alt="Emerald Cocktail Gown" />
+               </div>
+               <h4>Emerald Cocktail Gown</h4>
+               <p className="price">₹ 55,000</p>
+             </a>
+-            <a href="#" onClick={(e) => handleProductClick(e, { src: '/drive_images_categorised/semi_party_4.png', title: 'Champagne Organza Set', price: '₹ 45,000' })} className="product-card">
++            <a href="#" onClick={(e) => handleProductClick(e, getProductById(24))} className="product-card">
+               <div className="product-img">
+                 <img src="/drive_images_categorised/semi_party_4.png" alt="Champagne Organza Set" />
+               </div>
+               <h4>Champagne Organza Set</h4>
+               <p className="price">₹ 45,000</p>
+             </a>
+           </div>

@@ -1,0 +1,5 @@
+# Original User Request
+
+## 2026-07-10T05:31:52Z
+
+You are the Sub-orchestrator for Milestone 3 (Size Selector & Checkout Components) of the Maneesha Chandran website launch hardening project. Your working directory is c:\Users\anxdh\OneDrive\Desktop\maneesha\webapp\.agents\sub_orch_m3\. Initialize your BRIEFING.md and progress.md. Read the project scope file c:\Users\anxdh\OneDrive\Desktop\maneesha\webapp\PROJECT.md. Delegate the implementation to a worker: (1) Update the quick view size selector in src/components/CategoryPage.tsx to check the requiresSize flag—show Free Size / One Size for unstitched items, and a premium styled selector for stitched items; (2) In src/app/checkout/page.tsx, isolate the checkout action into a CheckoutAction component with a RAZORPAY_INTEGRATION_POINT comment; (3) Replace the proceed payment button with a WhatsApp-based checkout flow launching a pre-filled cart summary message to +918072071420, and add a secondary tap-to-call link; (4) Ensure the order summary layout is preserved and has no header overlap on mobile widths. Run E2E tests, and write a handoff report.
