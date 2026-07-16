@@ -14,8 +14,8 @@ export default function Lookbook() {
     async function fetchProducts() {
       try {
         const products = await client.fetch(allProductsQuery);
-        // Show all products since we don't have collection mapping yet
-        setDisplayProducts(products);
+        // Show only products that belong to a collection
+        setDisplayProducts(products.filter((p: any) => !!p.collection));
       } catch (err) {
         console.error(err);
       } finally {

@@ -14,6 +14,24 @@ export const allProductsQuery = groq`
   }
 `;
 
+export const categoryByIdQuery = groq`
+  *[_type == "category" && id == $id][0] {
+    "id": id,
+    "name": name,
+    "description": description,
+    "isCollection": isCollection
+  }
+`;
+
+export const allCollectionsQuery = groq`
+  *[_type == "category" && isCollection == true] {
+    "id": id,
+    "name": name,
+    "description": description,
+    "isCollection": isCollection
+  }
+`;
+
 export const productByIdQuery = groq`
   *[_type == "product" && id == $id][0] {
     "id": id,

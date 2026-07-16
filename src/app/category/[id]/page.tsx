@@ -3,10 +3,9 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { motion } from 'motion/react';
-import { categories, collections } from '@/data/store';
 import TiltCard from '@/components/TiltCard';
 import { client } from '@/sanity/client';
-import { allProductsQuery } from '@/sanity/queries';
+import { allProductsQuery, categoryByIdQuery } from '@/sanity/queries';
 
 export default function Category() {
   const params = useParams();
@@ -14,25 +13,31 @@ export default function Category() {
   const [activeFilter, setActiveFilter] = useState('All');
   
   const [products, setProducts] = useState<any[]>([]);
+  const [category, setCategory] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchProducts() {
+    async function fetchData() {
       try {
-        const fetchedProducts = await client.fetch(allProductsQuery);
+        const [fetchedProducts, fetchedCategory] = await Promise.all([
+          client.fetch(allProductsQuery),
+          client.fetch(categoryByIdQuery, { id })
+        ]);
         setProducts(fetchedProducts);
+        setCategory(fetchedCategory || { name: 'Collection', description: '' });
       } catch (err) {
         console.error(err);
       } finally {
         setLoading(false);
       }
     }
-    fetchProducts();
-  }, []);
+    fetchData();
+  }, [id]);
 
-  const category = [...categories, ...collections].find(c => c.id === id) || categories[0];
-  const categoryProducts = products.filter(p => p.categoryId === id);
-  let displayProducts = categoryProducts.length > 0 ? categoryProducts : products;
+  const categoryProducts = products.filter(p => 
+    category?.isCollection ? p.collection === id : p.categoryId === id
+  );
+  let displayProducts = categoryProducts.length > 0 ? categoryProducts : [];
 
   const availableSubCategories = Array.from(new Set(categoryProducts.map(p => p.subCategory).filter(Boolean))) as string[];
   const filters = ['All', ...availableSubCategories.map(c => c.charAt(0).toUpperCase() + c.slice(1))];
@@ -57,11 +62,11 @@ export default function Category() {
           className="py-12 flex flex-col items-center text-center mb-16"
         >
           <h1 className="font-serif text-5xl md:text-7xl text-charcoal mb-6">
-            {category.name}
+            {category?.name}
           </h1>
           <div className="w-12 h-[1px] bg-gold mb-6"></div>
           <p className="font-sans text-charcoal-light max-w-lg font-light text-lg">
-            Explore our curated selection of premium {category.name.toLowerCase()} wear, crafted for elegance and poise.
+            {category?.description || `Explore our curated selection of premium ${category?.name?.toLowerCase()} wear, crafted for elegance and poise.`}
           </p>
         </motion.div>
 

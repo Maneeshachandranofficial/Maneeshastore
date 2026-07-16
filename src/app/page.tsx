@@ -25,12 +25,10 @@ export default function Home() {
 
   const [heroIndex, setHeroIndex] = useState(0);
   
-  const heroImages = [
-    { id: 'onam-1', image: 'https://placehold.co/1080x1920/4A1517/FCF9F2?text=Hero+01' },
-    { id: 'parinaya-1', image: 'https://placehold.co/1080x1920/4A1517/FCF9F2?text=Hero+02' },
-    { id: 'eves-1', image: 'https://placehold.co/1080x1920/4A1517/FCF9F2?text=Hero+03' },
-    { id: 'onam-2', image: 'https://placehold.co/1080x1920/4A1517/FCF9F2?text=Hero+04' },
-    { id: 'parinaya-2', image: 'https://placehold.co/1080x1920/4A1517/FCF9F2?text=Hero+05' }
+  const [heroProducts, setHeroProducts] = useState<any[]>([]);
+
+  const heroImages = heroProducts.length > 0 ? heroProducts : [
+    { id: '1', image: 'https://placehold.co/1080x1920/4A1517/FCF9F2?text=Loading...' }
   ];
 
   const nextHero = () => setHeroIndex((prev) => (prev + 1) % heroImages.length);
@@ -42,8 +40,8 @@ export default function Home() {
     async function fetchProducts() {
       try {
         const fetchedProducts = await client.fetch(allProductsQuery);
-        // We don't have a featured flag in Sanity yet, so just pick the first 4 products
         setFeaturedProducts(fetchedProducts.slice(0, 4));
+        setHeroProducts(fetchedProducts.slice(4, 9)); // Use next 5 products for hero
       } catch (err) {
         console.error(err);
       }

@@ -44,6 +44,11 @@ export default defineType({
       type: 'string',
     }),
     defineField({
+      name: 'collection',
+      title: 'Collection (e.g. onam-2026-chaayam)',
+      type: 'string',
+    }),
+    defineField({
       name: 'sizingType',
       title: 'Sizing Type',
       type: 'string',
