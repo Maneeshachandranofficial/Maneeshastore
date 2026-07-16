@@ -14,8 +14,8 @@ export default function Lookbook() {
     async function fetchProducts() {
       try {
         const products = await client.fetch(allProductsQuery);
-        // Only show products with the 'customise' sizing type
-        setDisplayProducts(products.filter((p: any) => p.sizingType === 'customise'));
+        // Show all products since we don't have collection mapping yet
+        setDisplayProducts(products);
       } catch (err) {
         console.error(err);
       } finally {
@@ -29,6 +29,7 @@ export default function Lookbook() {
     return <div className="min-h-screen bg-cream flex items-center justify-center pt-20"><div className="w-12 h-12 border-4 border-gold border-t-transparent rounded-full animate-spin"></div></div>;
   }
 
+  return (
     <div className="bg-cream min-h-screen pt-40 pb-32">
       <div className="max-w-7xl mx-auto px-6">
         
