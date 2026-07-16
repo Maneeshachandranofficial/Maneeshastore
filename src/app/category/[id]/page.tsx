@@ -1,16 +1,35 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { motion } from 'motion/react';
-import { products, categories, collections } from '@/data/store';
+import { categories, collections } from '@/data/store';
 import TiltCard from '@/components/TiltCard';
+import { client } from '@/sanity/client';
+import { allProductsQuery } from '@/sanity/queries';
 
 export default function Category() {
   const params = useParams();
   const id = params?.id as string;
   const [activeFilter, setActiveFilter] = useState('All');
   
+  const [products, setProducts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        const fetchedProducts = await client.fetch(allProductsQuery);
+        setProducts(fetchedProducts);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchProducts();
+  }, []);
+
   const category = [...categories, ...collections].find(c => c.id === id) || categories[0];
   const categoryProducts = products.filter(p => p.categoryId === id);
   let displayProducts = categoryProducts.length > 0 ? categoryProducts : products;
@@ -20,6 +39,10 @@ export default function Category() {
 
   if (activeFilter !== 'All') {
     displayProducts = displayProducts.filter(p => p.subCategory === activeFilter.toLowerCase());
+  }
+
+  if (loading) {
+    return <div className="min-h-screen bg-cream flex items-center justify-center pt-20"><div className="w-12 h-12 border-4 border-gold border-t-transparent rounded-full animate-spin"></div></div>;
   }
 
   return (

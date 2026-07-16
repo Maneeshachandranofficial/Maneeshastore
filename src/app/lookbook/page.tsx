@@ -1,14 +1,34 @@
 'use client';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'motion/react';
-import { products } from '@/data/store';
 import TiltCard from '@/components/TiltCard';
+import { client } from '@/sanity/client';
+import { allProductsQuery } from '@/sanity/queries';
 
 export default function Lookbook() {
-  // Only show products with the 'customise' sizing type
-  const displayProducts = products.filter(p => p.sizingType === 'customise');
+  const [displayProducts, setDisplayProducts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  return (
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        const products = await client.fetch(allProductsQuery);
+        // Only show products with the 'customise' sizing type
+        setDisplayProducts(products.filter((p: any) => p.sizingType === 'customise'));
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchProducts();
+  }, []);
+
+  if (loading) {
+    return <div className="min-h-screen bg-cream flex items-center justify-center pt-20"><div className="w-12 h-12 border-4 border-gold border-t-transparent rounded-full animate-spin"></div></div>;
+  }
+
     <div className="bg-cream min-h-screen pt-40 pb-32">
       <div className="max-w-7xl mx-auto px-6">
         

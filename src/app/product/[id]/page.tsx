@@ -1,43 +1,62 @@
 'use client';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { useState } from 'react';
 import { motion } from 'motion/react';
-import { products } from '@/data/store';
 import { ArrowLeft, Heart, Share2, Check } from 'lucide-react';
 import { cn } from '@/utils/cn';
 import { useStore } from '@/context/StoreContext';
 import CustomiseModal from '@/components/CustomiseModal';
+import { client } from '@/sanity/client';
+import { productByIdQuery } from '@/sanity/queries';
 
 export default function Product() {
   const params = useParams();
   const id = params?.id as string;
   const navigate = useRouter();
-  const product = products.find(p => p.id === id) || products[0];
+  
+  const [product, setProduct] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchProduct() {
+      try {
+        const data = await client.fetch(productByIdQuery, { id });
+        setProduct(data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchProduct();
+  }, [id]);
   const { addToCart, addToSaved, removeFromSaved, isSaved } = useStore();
   
   const [selectedSize, setSelectedSize] = useState('M');
   const [showCustomiseModal, setShowCustomiseModal] = useState(false);
-  const isCustomiseOnly = product.sizingType === 'customise';
+  const isCustomiseOnly = product?.sizingType === 'customise';
   
-  const saved = isSaved(product.id, selectedSize);
+  const saved = product ? isSaved(product.id, selectedSize) : false;
 
   const handleAddToCart = () => {
+    if (!product) return;
     addToCart(product as any, selectedSize);
     navigate.push('/cart');
   };
 
   const handleToggleSave = () => {
+    if (!product) return;
     if (saved) {
-      // Find the specific saved item to remove, or we can just not allow removal here for simplicity, 
-      // but let's implement a simple remove if we can. Actually, we don't have the savedItemId easily available here.
-      // We can just call addToSaved for now. The prompt says "when pressed the save button we need to add a small logo from this save button just near the cart icon".
-      // Let's just do addToSaved for simplicity, or we can find it.
-      // Let's just addToSaved if not saved.
+      // Logic to remove
     } else {
       addToSaved(product as any, selectedSize);
     }
   };
+
+  if (loading || !product) {
+    return <div className="min-h-screen bg-cream flex items-center justify-center pt-20"><div className="w-12 h-12 border-4 border-gold border-t-transparent rounded-full animate-spin"></div></div>;
+  }
 
   return (
     <div className="bg-cream min-h-screen pt-40 pb-32">

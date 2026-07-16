@@ -3,10 +3,11 @@ import { motion, useScroll, useTransform, AnimatePresence } from 'motion/react';
 import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { products } from '@/data/store';
 import TiltCard from '@/components/TiltCard';
 import Logo from '@/components/Logo';
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { client } from '@/sanity/client';
+import { allProductsQuery } from '@/sanity/queries';
 
 export default function Home() {
   const { scrollYProgress } = useScroll();
@@ -35,14 +36,25 @@ export default function Home() {
   const nextHero = () => setHeroIndex((prev) => (prev + 1) % heroImages.length);
   const prevHero = () => setHeroIndex((prev) => (prev - 1 + heroImages.length) % heroImages.length);
 
+  const [featuredProducts, setFeaturedProducts] = useState<any[]>([]);
+
   useEffect(() => {
+    async function fetchProducts() {
+      try {
+        const fetchedProducts = await client.fetch(allProductsQuery);
+        // We don't have a featured flag in Sanity yet, so just pick the first 4 products
+        setFeaturedProducts(fetchedProducts.slice(0, 4));
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    fetchProducts();
+    
     const timer = setInterval(() => {
       nextHero();
     }, 4000);
     return () => clearInterval(timer);
   }, []);
-
-  const featuredProducts = products.filter(p => p.featured);
 
   return (
     <div className="bg-cream min-h-screen selection:bg-blush selection:text-charcoal">
