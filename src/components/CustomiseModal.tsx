@@ -32,7 +32,7 @@ export default function CustomiseModal({ isOpen, onClose, product }: CustomiseMo
           >
             <div className="p-8">
               <div className="flex justify-between items-center mb-8">
-                <h2 className="font-serif text-2xl text-charcoal">Customise Order</h2>
+                <h2 className="font-sans text-2xl text-charcoal">Customise Order</h2>
                 <button onClick={onClose} className="p-2 -mr-2 text-charcoal/60 hover:text-charcoal transition-colors">
                   <X className="w-5 h-5" />
                 </button>
@@ -43,7 +43,7 @@ export default function CustomiseModal({ isOpen, onClose, product }: CustomiseMo
                   <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
                 </div>
                 <div>
-                  <p className="font-serif text-charcoal text-lg leading-tight">{product.name}</p>
+                  <p className="font-sans text-charcoal text-lg leading-tight">{product.name}</p>
                   <p className="font-sans text-xs text-charcoal/60 tracking-widest uppercase mt-1">{product.price}</p>
                 </div>
               </div>

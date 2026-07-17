@@ -86,7 +86,7 @@ export default function TiltCard({ product, className, imageClassName }: TiltCar
       
       {/* Label outside the card, clean editorial style */}
       <div className="mt-4 md:mt-6 flex flex-col items-center text-center">
-         <h3 className="font-serif text-charcoal text-base md:text-lg tracking-wide mb-1">{product.name}</h3>
+         <h3 className="font-sans text-charcoal text-base md:text-lg tracking-wide mb-1">{product.name}</h3>
          <p className="font-sans font-normal text-charcoal/60 text-xs md:text-sm tracking-wider">{product.price}</p>
       </div>
     </motion.div>

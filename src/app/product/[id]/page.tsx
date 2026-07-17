@@ -107,7 +107,7 @@ export default function Product() {
             className="lg:col-span-7 sticky top-40 flex flex-col pt-8"
           >
             <div className="mb-12">
-              <h1 className="font-serif text-4xl md:text-5xl text-charcoal mb-4 leading-tight">{product.name}</h1>
+              <h1 className="font-sans text-4xl md:text-5xl text-charcoal mb-4 leading-tight">{product.name}</h1>
               <p className="font-sans text-xl font-normal text-charcoal/70 mb-8 tracking-wide">{product.price}</p>
               <p className="font-sans text-charcoal-light font-light leading-relaxed text-base md:text-lg">
                 {product.description}

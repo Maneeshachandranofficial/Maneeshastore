@@ -32,7 +32,7 @@ export default function Cart() {
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
           className="mb-16 pb-8 border-b border-charcoal/10"
         >
-           <h1 className="font-serif text-5xl text-charcoal mb-4">Your Cart</h1>
+           <h1 className="font-sans text-5xl text-charcoal mb-4">Your Cart</h1>
            <p className="font-sans text-charcoal-light font-light">2 items eligible for complimentary shipping.</p>
         </motion.div>
 
@@ -58,7 +58,7 @@ export default function Cart() {
                   <div className="flex-grow flex flex-col justify-between h-full py-2">
                     <div>
                       <div className="flex justify-between items-start gap-4">
-                        <Link href={`/product/${item.id}`} className="font-serif text-charcoal hover:text-charcoal-light transition-colors text-xl md:text-2xl leading-tight">
+                        <Link href={`/product/${item.id}`} className="font-sans text-charcoal hover:text-charcoal-light transition-colors text-xl md:text-2xl leading-tight">
                           {item.name}
                         </Link>
                         <button 

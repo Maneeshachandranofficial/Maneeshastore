@@ -6,6 +6,7 @@ import {structureTool} from 'sanity/structure'
 
 import {apiVersion, dataset, projectId} from './src/sanity/env'
 import {schema} from './src/sanity/schemas'
+import {structure} from './src/sanity/structure'
 
 export default defineConfig({
   basePath: '/studio',
@@ -13,7 +14,7 @@ export default defineConfig({
   dataset,
   schema,
   plugins: [
-    structureTool(),
+    structureTool({structure}),
     visionTool({defaultApiVersion: apiVersion}),
   ],
 })

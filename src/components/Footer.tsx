@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import Logo from './Logo';
+
 import { Mail, Phone } from 'lucide-react';
 import { useState, FormEvent } from 'react';
 
@@ -52,10 +52,9 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6">
         
         <div className="flex flex-col items-center justify-center mb-20">
-          <div className="w-16 h-16 rounded-full overflow-hidden border border-maroon/20 mb-6 flex items-center justify-center bg-maroon shadow-sm">
-             <Logo className="w-10 h-10 text-ivory" />
-          </div>
-          <h3 className="font-serif text-2xl text-charcoal tracking-widest uppercase">Maneesha Chandran</h3>
+          <Link href="/">
+            <img src="/logo.svg" alt="Maneesha Chandran" className="h-16 md:h-20 object-contain" />
+          </Link>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 lg:gap-20 text-center md:text-left">

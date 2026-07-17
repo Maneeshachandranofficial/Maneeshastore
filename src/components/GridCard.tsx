@@ -27,7 +27,7 @@ export default function GridCard({ product }: GridCardProps) {
         
         {/* Hover Reveal Items */}
         <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col items-center gap-3 mt-2">
-           <span className="font-serif text-gold text-sm italic">{product.price}</span>
+           <span className="font-sans text-gold text-sm italic">{product.price}</span>
            <span className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-white/30 text-white hover:bg-white hover:text-charcoal transition-colors mt-2">
              <ArrowUpRight className="w-4 h-4" />
            </span>

@@ -1,9 +1,5 @@
 import type { Metadata } from "next";
-import { Cinzel, Jost } from "next/font/google";
 import "./globals.css";
-
-const cinzel = Cinzel({ subsets: ["latin"], weight: ["400", "500", "600"], variable: '--font-cinzel' });
-const jost = Jost({ subsets: ["latin"], weight: ["300", "400", "500"], variable: '--font-jost' });
 
 export const metadata: Metadata = {
   title: "Maneesha Chandran | Luxury Couture",
@@ -21,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={`${cinzel.variable} ${jost.variable} antialiased`}>
+      <body className="antialiased">
         <StoreProvider>
           <Navigation />
           {children}

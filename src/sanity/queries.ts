@@ -47,3 +47,17 @@ export const productByIdQuery = groq`
     "isHero": isHero
   }
 `;
+
+export const siteSettingsQuery = groq`
+  *[_type == "siteSettings"][0] {
+    sloganLine1,
+    sloganLine2,
+    aboutHeading,
+    aboutHeadingAccent,
+    aboutBody,
+    phone,
+    email,
+    instagram,
+    calendlyUrl
+  }
+`;

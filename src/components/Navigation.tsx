@@ -53,7 +53,7 @@ export default function Navigation() {
   return (
     <div ref={navRef} className="sticky top-0 left-0 w-full z-50 bg-maroon shadow-md">
       {/* Top Header Bar */}
-      <header className="w-full flex items-center justify-between h-20 px-6 md:px-12">
+      <header className="w-full flex items-center justify-between h-28 px-6 md:px-12">
         {/* Left: 3-Dot Menu */}
         <div className="flex-1 flex justify-start">
           <button 
@@ -67,7 +67,7 @@ export default function Navigation() {
 
         {/* Center: Logo */}
         <Link href="/" className="flex-1 flex justify-center items-center">
-          <img src="/logo.svg" alt="Maneesha Chandran" className="h-12 object-contain" />
+          <img src="/logo.svg" alt="Maneesha Chandran" className="h-16 md:h-20 object-contain" />
         </Link>
 
         {/* Right: Icons */}
@@ -102,7 +102,7 @@ export default function Navigation() {
                   className="absolute top-full right-0 mt-4 bg-white shadow-2xl rounded-sm p-6 w-[320px] flex flex-col gap-4 z-50 pointer-events-auto border border-gray-100"
                 >
                   <div className="flex justify-between items-center mb-2">
-                    <h3 className="font-serif text-lg text-charcoal">Saved Items</h3>
+                    <h3 className="font-sans text-lg text-charcoal">Saved Items</h3>
                     <button onClick={() => setIsSavedOpen(false)} className="text-gray-400 hover:text-charcoal transition-colors">
                       <X className="w-4 h-4" />
                     </button>
@@ -167,7 +167,7 @@ export default function Navigation() {
             <div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-3 gap-8">
               {/* Couture */}
               <div>
-                <h3 className="font-serif text-gold text-lg mb-6 tracking-wide">Couture</h3>
+                <h3 className="font-sans text-gold text-lg mb-6 tracking-wide">Couture</h3>
                 <ul className="flex flex-col gap-4 font-sans text-sm text-ivory/70 tracking-widest uppercase">
                   <li><Link href="/category/bride" onClick={() => setIsMenuOpen(false)} className="hover:text-white transition-colors">Bride</Link></li>
                   <li><Link href="/category/grooms" onClick={() => setIsMenuOpen(false)} className="hover:text-white transition-colors">Grooms</Link></li>
@@ -178,7 +178,7 @@ export default function Navigation() {
 
               {/* Collections */}
               <div>
-                <h3 className="font-serif text-gold text-lg mb-6 tracking-wide">Collections</h3>
+                <h3 className="font-sans text-gold text-lg mb-6 tracking-wide">Collections</h3>
                 <ul className="flex flex-col gap-4 font-sans text-sm text-ivory/70 tracking-widest uppercase">
                   <li><Link href="/category/onam-2026-chaayam" onClick={() => setIsMenuOpen(false)} className="hover:text-white transition-colors">Onam '26 Chaayam</Link></li>
                   <li><Link href="/category/eves-garden-2024" onClick={() => setIsMenuOpen(false)} className="hover:text-white transition-colors">Eves Garden '24</Link></li>
@@ -188,7 +188,7 @@ export default function Navigation() {
 
               {/* Atelier */}
               <div>
-                <h3 className="font-serif text-gold text-lg mb-6 tracking-wide">Atelier</h3>
+                <h3 className="font-sans text-gold text-lg mb-6 tracking-wide">Atelier</h3>
                 <ul className="flex flex-col gap-4 font-sans text-sm text-ivory/70 tracking-widest uppercase">
                   <li><Link href="/lookbook" onClick={() => setIsMenuOpen(false)} className="hover:text-white transition-colors">Lookbook</Link></li>
                   <li><a href="https://calendly.com/maneeshachandranweb/30min" target="_blank" rel="noopener noreferrer" onClick={() => setIsMenuOpen(false)} className="hover:text-white transition-colors">Book Consultation</a></li>

@@ -93,4 +93,19 @@ export default defineType({
       initialValue: false,
     }),
   ],
+  preview: {
+    select: {
+      title: 'name',
+      subtitle: 'price',
+      media: 'image',
+      isHero: 'isHero',
+    },
+    prepare({ title, subtitle, media, isHero }) {
+      return {
+        title: title || 'Untitled product',
+        subtitle: [subtitle, isHero ? '★ Hero' : null].filter(Boolean).join('  ·  '),
+        media,
+      }
+    },
+  },
 })
