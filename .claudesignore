@@ -1,0 +1,13 @@
+public/
+node_modules/
+.next/
+out/
+build/
+*.png
+*.jpg
+*.jpeg
+*.svg
+*.gif
+*.webp
+*.mp4
+*.pdf
