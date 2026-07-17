@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
-import { Search, ShoppingBag, Menu, X, Heart, MoreHorizontal } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { Search, ShoppingBag, X, Heart, MoreHorizontal } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useState, useEffect, useRef } from 'react';
 import { cn } from '../utils/cn';
@@ -13,7 +13,7 @@ export default function Navigation() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isSavedOpen, setIsSavedOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const location = usePathname();
+  const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useRouter();
   const { savedItems, cartItems, moveToCart, removeFromSaved } = useStore();
   const navRef = useRef<HTMLDivElement>(null);
@@ -25,11 +25,18 @@ export default function Navigation() {
         setIsSavedOpen(false);
       }
     };
-    
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 40);
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   useEffect(() => {
@@ -51,12 +58,23 @@ export default function Navigation() {
     : [];
 
   return (
-    <div ref={navRef} className="sticky top-0 left-0 w-full z-50 bg-maroon shadow-md">
+    <div
+      ref={navRef}
+      className={cn(
+        "sticky top-0 left-0 w-full z-50 bg-maroon transition-shadow duration-500 ease-out",
+        isScrolled ? "shadow-xl shadow-black/20" : "shadow-md"
+      )}
+    >
       {/* Top Header Bar */}
-      <header className="w-full flex items-center justify-between h-28 px-6 md:px-12">
+      <header
+        className={cn(
+          "w-full flex items-center justify-between px-6 md:px-12 transition-[height] duration-500 ease-out",
+          isScrolled ? "h-20" : "h-28"
+        )}
+      >
         {/* Left: 3-Dot Menu */}
         <div className="flex-1 flex justify-start">
-          <button 
+          <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="p-2 text-gold hover:text-white transition-colors flex items-center gap-2 group"
           >
@@ -67,7 +85,14 @@ export default function Navigation() {
 
         {/* Center: Logo */}
         <Link href="/" className="flex-1 flex justify-center items-center">
-          <img src="/logo.svg" alt="Maneesha Chandran" className="h-16 md:h-20 object-contain" />
+          <img
+            src="/logo.svg"
+            alt="Maneesha Chandran"
+            className={cn(
+              "object-contain transition-all duration-500 ease-out",
+              isScrolled ? "h-11 md:h-14" : "h-16 md:h-20"
+            )}
+          />
         </Link>
 
         {/* Right: Icons */}

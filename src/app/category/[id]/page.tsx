@@ -4,21 +4,22 @@ import { allProductsQuery, categoryByIdQuery } from '@/sanity/queries';
 
 export const revalidate = 60;
 
-export default async function Category({ params }: { params: { id: string } }) {
+export default async function Category({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   let products = [];
   let category = { name: 'Collection', description: '', isCollection: false };
 
   try {
     const [fetchedProducts, fetchedCategory] = await Promise.all([
       client.fetch(allProductsQuery),
-      client.fetch(categoryByIdQuery, { id: params.id })
+      client.fetch(categoryByIdQuery, { id })
     ]);
-    
+
     category = fetchedCategory || category;
-    
+
     // Filter products
-    products = fetchedProducts.filter((p: any) => 
-      category.isCollection ? p.collection === params.id : p.categoryId === params.id
+    products = fetchedProducts.filter((p: any) =>
+      category.isCollection ? p.collection === id : p.categoryId === id
     );
   } catch (err) {
     console.error("Sanity fetch error on server:", err);

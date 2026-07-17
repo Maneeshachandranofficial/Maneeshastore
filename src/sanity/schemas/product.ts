@@ -23,6 +23,12 @@ export default defineType({
       type: 'string',
     }),
     defineField({
+      name: 'description',
+      title: 'Description',
+      type: 'text',
+      description: 'Shown on the product detail page beneath the price.',
+    }),
+    defineField({
       name: 'numericPrice',
       title: 'Numeric Price (for cart calculation)',
       type: 'number',

@@ -103,10 +103,16 @@ export default function HomeClient({ heroProducts, featuredProducts, siteSetting
 
       {/* Zero-Gap Editorial Grid */}
       <section className="bg-white">
-        <div className="flex flex-col items-center text-center py-24 md:py-32">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-10%" }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="flex flex-col items-center text-center py-24 md:py-32"
+        >
           <h2 className="font-sans text-xs tracking-[0.3em] uppercase text-charcoal/60 mb-6">Curated This Season</h2>
           <h3 className="font-sans text-3xl md:text-5xl text-charcoal">Masterpieces</h3>
-        </div>
+        </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0">
           {featuredProducts.map((product: any) => (
@@ -127,7 +133,13 @@ export default function HomeClient({ heroProducts, featuredProducts, siteSetting
       {/* About Section - Minimal and Dark */}
       <section className="py-32 md:py-48 px-6 bg-charcoal text-white relative overflow-hidden">
         <div className="absolute inset-0 opacity-10 bg-black mix-blend-overlay"></div>
-        <div className="max-w-4xl mx-auto text-center relative z-10 pt-10">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-10%" }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="max-w-4xl mx-auto text-center relative z-10 pt-10"
+        >
            <img src="/logo.svg" alt="Maneesha Chandran" className="h-16 md:h-24 mx-auto mb-16 opacity-80" />
           <h2 className="font-sans text-3xl md:text-5xl leading-tight mb-10">
             {aboutHeading}<br/><span className="italic text-gold">{aboutHeadingAccent}</span>
@@ -135,7 +147,7 @@ export default function HomeClient({ heroProducts, featuredProducts, siteSetting
           <p className="font-sans text-white/70 text-lg md:text-xl font-light leading-relaxed max-w-2xl mx-auto">
             {aboutBody}
           </p>
-        </div>
+        </motion.div>
       </section>
 
     </div>
