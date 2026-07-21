@@ -11,6 +11,7 @@ export const allProductsQuery = groq`
     "subCategory": subCategory,
     "sizingType": sizingType,
     "collection": collection,
+    "priceOnRequest": priceOnRequest,
     "isHero": isHero
   }
 `;
@@ -44,6 +45,7 @@ export const productByIdQuery = groq`
     "subCategory": subCategory,
     "sizingType": sizingType,
     "collection": collection,
+    "priceOnRequest": priceOnRequest,
     "isHero": isHero
   }
 `;
@@ -55,6 +57,8 @@ export const siteSettingsQuery = groq`
     aboutHeading,
     aboutHeadingAccent,
     aboutBody,
+    stats[]{ value, label },
+    testimonials[]{ quote, name, role },
     phone,
     email,
     instagram,

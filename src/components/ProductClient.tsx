@@ -14,7 +14,7 @@ export default function ProductClient({ product }: { product: any }) {
 
   const [selectedSize, setSelectedSize] = useState('M');
   const [showCustomiseModal, setShowCustomiseModal] = useState(false);
-  const isCustomiseOnly = product?.sizingType === 'customise';
+  const isEnquiry = product?.sizingType === 'customise' || product?.priceOnRequest === true;
 
   const saved = product ? isSaved(product.id, selectedSize) : false;
 
@@ -60,12 +60,12 @@ export default function ProductClient({ product }: { product: any }) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
             >
-              <div className="w-full bg-ivory p-4 md:p-8 flex justify-center items-center">
-                <div className="w-full max-h-[75vh] relative overflow-hidden flex justify-center">
+              <div className="flex w-full items-center justify-center rounded-2xl bg-ivory p-4 md:rounded-[1.75rem] md:p-8">
+                <div className="relative flex max-h-[75vh] w-full justify-center overflow-hidden rounded-xl">
                   <img
                     src={product.image}
                     alt={product.name}
-                    className="w-auto h-auto max-w-full max-h-[75vh] object-contain hover:scale-105 transition-transform duration-1000 ease-[0.16,1,0.3,1]"
+                    className="h-auto max-h-[75vh] w-auto max-w-full object-contain transition-transform duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-105"
                   />
                 </div>
               </div>
@@ -81,13 +81,15 @@ export default function ProductClient({ product }: { product: any }) {
           >
             <div className="mb-12">
               <h1 className="font-sans text-4xl md:text-5xl text-charcoal mb-4 leading-tight">{product.name}</h1>
-              <p className="font-sans text-xl font-normal text-gold-dark mb-8 tracking-wide">{product.price}</p>
+              <p className="font-sans text-xl font-normal text-gold-dark mb-8 tracking-wide">
+                {product.priceOnRequest ? 'Price on Request' : product.price}
+              </p>
               <p className="font-sans text-charcoal-light font-light leading-relaxed text-base md:text-lg">
                 {product.description}
               </p>
             </div>
 
-            {!isCustomiseOnly && (
+            {!isEnquiry && (
               <div className="mb-12">
                 <div className="flex items-center justify-between mb-6">
                    <h3 className="font-sans tracking-widest text-xs uppercase text-charcoal font-medium">Select Size</h3>
@@ -101,9 +103,9 @@ export default function ProductClient({ product }: { product: any }) {
                       key={size}
                       onClick={() => setSelectedSize(size)}
                       className={cn(
-                        "w-14 h-14 border flex items-center justify-center font-sans text-sm transition-all duration-200",
+                        "w-14 h-14 rounded-full border flex items-center justify-center font-sans text-sm transition-all duration-200",
                         selectedSize === size
-                          ? "bg-charcoal text-cream border-charcoal"
+                          ? "bg-maroon text-cream border-maroon"
                           : "border-charcoal/20 hover:border-charcoal hover:-translate-y-0.5 text-charcoal"
                       )}
                     >
@@ -115,17 +117,17 @@ export default function ProductClient({ product }: { product: any }) {
             )}
 
             <div className="flex flex-col gap-4 mb-16">
-              {isCustomiseOnly ? (
+              {isEnquiry ? (
                 <button
                   onClick={() => setShowCustomiseModal(true)}
-                  className="w-full bg-charcoal text-cream py-5 text-center font-sans tracking-widest uppercase text-sm hover:bg-maroon transition-colors duration-300"
+                  className="w-full bg-maroon text-cream py-5 rounded-full text-center font-sans tracking-[0.2em] uppercase text-xs hover:bg-maroon-dark transition-colors duration-300"
                 >
-                  Customise Order
+                  {product.priceOnRequest ? 'Enquire — Contact for Pricing' : 'Customise Order'}
                 </button>
               ) : (
                 <button
                   onClick={handleAddToCart}
-                  className="w-full bg-charcoal text-cream py-5 text-center font-sans tracking-widest uppercase text-sm hover:bg-maroon transition-colors duration-300"
+                  className="w-full bg-maroon text-cream py-5 rounded-full text-center font-sans tracking-[0.2em] uppercase text-xs hover:bg-maroon-dark transition-colors duration-300"
                 >
                   Add to Cart
                 </button>

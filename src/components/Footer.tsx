@@ -4,6 +4,7 @@ import Link from 'next/link';
 
 import { Mail, Phone } from 'lucide-react';
 import { useState, FormEvent } from 'react';
+import LogoLockup from './LogoLockup';
 
 export default function Footer() {
   const [email, setEmail] = useState('');
@@ -52,8 +53,8 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6">
         
         <div className="flex flex-col items-center justify-center mb-20">
-          <Link href="/">
-            <img src="/logo.svg" alt="Maneesha Chandran" className="h-16 md:h-20 object-contain" />
+          <Link href="/" aria-label="Maneesha Chandran — home">
+            <LogoLockup className="h-16 w-auto text-gold md:h-20" />
           </Link>
         </div>
         
@@ -61,18 +62,18 @@ export default function Footer() {
           <div className="flex flex-col gap-6">
             <h4 className="font-sans font-medium text-charcoal tracking-widest text-xs uppercase">Shop</h4>
             <div className="flex flex-col gap-4">
-              <Link href="/category/bridal" className="text-charcoal-light font-light hover:text-charcoal transition-colors text-sm">Bridal</Link>
-              <Link href="/category/grooms" className="text-charcoal-light font-light hover:text-charcoal transition-colors text-sm">Grooms</Link>
-              <Link href="/category/kids" className="text-charcoal-light font-light hover:text-charcoal transition-colors text-sm">Kids</Link>
+              <Link href="/category/bride" className="text-charcoal-light font-light hover:text-charcoal transition-colors text-sm">Bride</Link>
+              <Link href="/category/groom" className="text-charcoal-light font-light hover:text-charcoal transition-colors text-sm">Groom</Link>
+              <Link href="/category/ethnic" className="text-charcoal-light font-light hover:text-charcoal transition-colors text-sm">Ethnic</Link>
             </div>
           </div>
-          
+
           <div className="flex flex-col gap-6">
             <h4 className="font-sans font-medium text-charcoal tracking-widest text-xs uppercase">Collections</h4>
             <div className="flex flex-col gap-4">
-              <Link href="/category/ethnic-wear" className="text-charcoal-light font-light hover:text-charcoal transition-colors text-sm">Ethnic Wear</Link>
-              <Link href="/category/onam-2026" className="text-charcoal-light font-light hover:text-charcoal transition-colors text-sm">Onam '26</Link>
-              <Link href="/category/eves-garden" className="text-charcoal-light font-light hover:text-charcoal transition-colors text-sm">Eves Garden '24</Link>
+              <Link href="/category/onam-2026-chaayam" className="text-charcoal-light font-light hover:text-charcoal transition-colors text-sm">Onam '26 Chaayam</Link>
+              <Link href="/category/eves-garden-2024" className="text-charcoal-light font-light hover:text-charcoal transition-colors text-sm">Eves Garden '24</Link>
+              <Link href="/category/parinaya-2026" className="text-charcoal-light font-light hover:text-charcoal transition-colors text-sm">Parinaya '26</Link>
             </div>
           </div>
           

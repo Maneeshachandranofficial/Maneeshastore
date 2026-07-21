@@ -83,15 +83,15 @@ export default function CheckoutAction({ cart, standardItems, customItems, cartS
     <div className="w-full flex flex-col gap-3">
       {isMixedCart && (
         <div className="mb-2">
-          <label className="block text-[10px] uppercase tracking-[0.15em] text-[var(--text-muted)] mb-2">
+          <label className="block text-[10px] uppercase tracking-[0.15em] text-charcoal/50 mb-2">
             WhatsApp Number (for Custom Items)
           </label>
-          <input 
+          <input
             type="tel"
             placeholder="+91"
             value={whatsappNumber}
             onChange={(e) => setWhatsappNumber(e.target.value)}
-            className="w-full bg-[var(--ivory)] border border-[var(--line)] py-3 px-4 text-xs font-light text-[var(--near-black)] outline-none focus:border-[var(--oxblood)] transition-colors"
+            className="w-full bg-cream border border-charcoal/15 rounded-full py-3 px-5 text-xs font-light text-charcoal outline-none focus:border-maroon transition-colors"
           />
           {error && <p className="text-maroon text-[10px] mt-1 tracking-wide">{error}</p>}
         </div>
@@ -101,9 +101,9 @@ export default function CheckoutAction({ cart, standardItems, customItems, cartS
         <button
           onClick={handleCheckoutClick}
           disabled={isProcessing}
-          className="w-full py-4 text-xs tracking-widest uppercase inline-block text-center cursor-pointer bg-charcoal text-cream hover:bg-charcoal-light transition-all duration-300 disabled:opacity-70 disabled:cursor-wait"
+          className="w-full py-4 rounded-full text-xs tracking-[0.2em] uppercase inline-block text-center cursor-pointer bg-maroon text-cream hover:bg-maroon-dark transition-all duration-300 disabled:opacity-70 disabled:cursor-wait"
         >
-          {isProcessing ? 'Processing Securely...' : 
+          {isProcessing ? 'Processing Securely...' :
             (hasCustom ? 'Pay for Standard Items' : 'Pay Securely via Razorpay')
           }
         </button>
@@ -113,15 +113,15 @@ export default function CheckoutAction({ cart, standardItems, customItems, cartS
         href={getWhatsAppLink()}
         target="_blank"
         rel="noopener noreferrer"
-        className={`w-full py-4 text-xs tracking-widest uppercase inline-block text-center cursor-pointer transition-all duration-300 ${hasStandard ? 'bg-ivory border border-charcoal/20 text-charcoal hover:bg-charcoal/5' : 'bg-charcoal text-cream hover:bg-charcoal-light'}`}
+        className={`w-full py-4 rounded-full text-xs tracking-[0.2em] uppercase inline-block text-center cursor-pointer transition-all duration-300 ${hasStandard ? 'bg-cream border border-charcoal/20 text-charcoal hover:border-maroon hover:text-maroon' : 'bg-maroon text-cream hover:bg-maroon-dark'}`}
       >
         {hasStandard ? 'Or Order via WhatsApp' : 'Consult via WhatsApp'}
       </a>
-      
+
       <div className="mt-4 text-center">
         <a
           href="tel:+919526266369"
-          className="text-[10px] uppercase tracking-[0.15em] text-[var(--text-muted)] hover:text-[var(--maroon)] transition-colors duration-300 border-b border-transparent hover:border-[var(--maroon)] pb-px inline-flex items-center gap-1.5"
+          className="text-[10px] uppercase tracking-[0.15em] text-charcoal/50 hover:text-maroon transition-colors duration-300 border-b border-transparent hover:border-maroon pb-px inline-flex items-center gap-1.5"
         >
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="mt-px">
             <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>

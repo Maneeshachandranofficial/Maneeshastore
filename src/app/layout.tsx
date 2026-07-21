@@ -8,6 +8,7 @@ export const metadata: Metadata = {
 
 import { StoreProvider } from '@/context/StoreContext';
 import Navigation from '@/components/Navigation';
+import BackButton from '@/components/BackButton';
 import Footer from '@/components/Footer';
 
 export default function RootLayout({
@@ -20,6 +21,7 @@ export default function RootLayout({
       <body className="antialiased">
         <StoreProvider>
           <Navigation />
+          <BackButton />
           {children}
           <Footer />
         </StoreProvider>

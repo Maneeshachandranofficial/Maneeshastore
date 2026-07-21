@@ -37,6 +37,44 @@ export default defineType({
       type: 'text',
     }),
     defineField({
+      name: 'stats',
+      title: 'Atelier Stats (homepage)',
+      description: 'The four small statistics shown on the homepage. Leave empty to use defaults.',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            { name: 'value', title: 'Value (e.g. "500+")', type: 'string' },
+            { name: 'label', title: 'Label (e.g. "Bespoke pieces crafted")', type: 'string' },
+          ],
+          preview: {
+            select: { title: 'value', subtitle: 'label' },
+          },
+        },
+      ],
+      validation: (Rule) => Rule.max(4),
+    }),
+    defineField({
+      name: 'testimonials',
+      title: 'Testimonials (homepage)',
+      description: 'Client quotes shown on the homepage. Leave empty to use defaults.',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            { name: 'quote', title: 'Quote', type: 'text' },
+            { name: 'name', title: 'Client Name', type: 'string' },
+            { name: 'role', title: 'Role / Collection (e.g. "Bride, Kochi")', type: 'string' },
+          ],
+          preview: {
+            select: { title: 'name', subtitle: 'role' },
+          },
+        },
+      ],
+    }),
+    defineField({
       name: 'phone',
       title: 'Phone',
       type: 'string',

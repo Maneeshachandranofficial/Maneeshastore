@@ -31,6 +31,25 @@
   }
 }
 
+/* ---- Display type scale: couture feel from Jost via light weight + wide tracking ---- */
+.display-xl {
+  @apply font-sans font-light leading-[1.02] tracking-[-0.01em];
+  font-size: clamp(2.75rem, 7vw, 6rem);
+}
+.display-lg {
+  @apply font-sans font-light leading-[1.05] tracking-[-0.01em];
+  font-size: clamp(2.25rem, 5vw, 4rem);
+}
+.display-md {
+  @apply font-sans font-light leading-[1.1] tracking-normal;
+  font-size: clamp(1.75rem, 3.5vw, 3rem);
+}
+.eyebrow {
+  @apply font-sans uppercase text-charcoal/50;
+  font-size: 0.7rem;
+  letter-spacing: 0.35em;
+}
+
 /* Glassmorphism iOS-style Utilities */
 .mac-glass {
   @apply bg-cream/80 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.04)] border border-ivory/60;
@@ -50,4 +69,25 @@
   position: absolute;
   inset: 2px;
   @apply border border-dashed border-gold/50 rounded-full opacity-50;
+}
+
+/* Slow Ken-Burns drift for hero imagery */
+@keyframes kenburns {
+  0%   { transform: scale(1.05) translate3d(0, 0, 0); }
+  100% { transform: scale(1.16) translate3d(1.5%, -1.5%, 0); }
+}
+.animate-kenburns {
+  animation: kenburns 12s ease-out both;
+}
+
+/* Respect reduced-motion globally */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }

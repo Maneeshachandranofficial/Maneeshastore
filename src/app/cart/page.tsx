@@ -32,8 +32,12 @@ export default function Cart() {
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
           className="mb-16 pb-8 border-b border-charcoal/10"
         >
-           <h1 className="font-sans text-5xl text-charcoal mb-4">Your Cart</h1>
-           <p className="font-sans text-charcoal-light font-light">2 items eligible for complimentary shipping.</p>
+           <h1 className="display-md text-charcoal mb-4">Your Cart</h1>
+           <p className="font-sans text-charcoal-light font-light">
+             {cartItems.length === 0
+               ? 'Your cart is currently empty.'
+               : `${cartItems.length} ${cartItems.length === 1 ? 'item' : 'items'} eligible for complimentary shipping.`}
+           </p>
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24">
@@ -51,7 +55,7 @@ export default function Cart() {
                   transition={{ duration: 1.2, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
                   className="flex gap-8 items-start relative group"
                 >
-                  <Link href={`/product/${item.id}`} className="w-24 md:w-32 aspect-[9/16] overflow-hidden shrink-0 bg-ivory">
+                  <Link href={`/product/${item.id}`} className="w-24 md:w-32 aspect-[3/4] overflow-hidden shrink-0 rounded-xl bg-ivory">
                     <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
                   </Link>
                   
@@ -72,23 +76,23 @@ export default function Cart() {
                     </div>
                     
                     <div className="flex items-end justify-between mt-8">
-                      <div className="flex items-center border border-charcoal/20">
-                        <button 
+                      <div className="flex items-center rounded-full border border-charcoal/20">
+                        <button
                           onClick={() => updateCartQuantity(item.cartItemId, item.quantity - 1)}
-                          className="w-10 h-10 flex items-center justify-center text-charcoal/60 hover:text-charcoal hover:bg-charcoal/5 transition-colors"
+                          className="w-10 h-10 flex items-center justify-center rounded-l-full text-charcoal/60 hover:text-charcoal hover:bg-charcoal/5 transition-colors"
                         >
                           -
                         </button>
                         <span className="font-sans text-sm w-6 text-center">{item.quantity}</span>
-                        <button 
+                        <button
                           onClick={() => updateCartQuantity(item.cartItemId, item.quantity + 1)}
-                          className="w-10 h-10 flex items-center justify-center text-charcoal/60 hover:text-charcoal hover:bg-charcoal/5 transition-colors"
+                          className="w-10 h-10 flex items-center justify-center rounded-r-full text-charcoal/60 hover:text-charcoal hover:bg-charcoal/5 transition-colors"
                         >
                           +
                         </button>
                       </div>
-                      
-                      <span className="font-sans text-charcoal text-xl tracking-wide">{item.price}</span>
+
+                      <span className="font-sans text-gold-dark text-xl tracking-wide">{item.price}</span>
                     </div>
                   </div>
                 </motion.div>
@@ -103,7 +107,7 @@ export default function Cart() {
             transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-4"
           >
-            <div className="bg-ivory p-8 md:p-10 sticky top-40">
+            <div className="bg-ivory p-8 md:p-10 sticky top-32 rounded-2xl">
               <h2 className="font-sans font-medium tracking-widest uppercase text-sm text-charcoal mb-8 border-b border-charcoal/10 pb-4">Order Summary</h2>
               
               <div className="space-y-6 font-sans text-sm font-light text-charcoal-light mb-8 pb-8 border-b border-charcoal/10">
@@ -122,7 +126,7 @@ export default function Cart() {
                 <span className="text-2xl text-charcoal tracking-wide">{formatPrice(subtotal)}</span>
               </div>
               
-              <Link href="/checkout" className="w-full bg-charcoal text-cream py-5 text-center font-sans tracking-widest uppercase text-sm hover:bg-charcoal-light transition-colors flex items-center justify-center gap-2">
+              <Link href="/checkout" className="w-full bg-maroon text-cream py-5 text-center font-sans tracking-[0.2em] uppercase text-xs hover:bg-maroon-dark transition-colors flex items-center justify-center gap-2 rounded-full">
                 Checkout <ChevronRight className="w-4 h-4" />
               </Link>
               
