@@ -1,12 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Playfair+Display:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
 @theme {
-  /* Client typography: Playfair Display headings + Cormorant Garamond body.
-     Token names kept (--font-sans is the default/body) so every existing
-     `font-sans` usage becomes Cormorant automatically. */
-  --font-sans: "Cormorant Garamond", ui-serif, Georgia, "Times New Roman", serif;
-  --font-display: "Playfair Display", ui-serif, Georgia, serif;
+  /* Site typeface: Josefin Sans (matching manishmalhotra.in) — one geometric
+     sans used everywhere; headings differ only by weight/case/tracking.
+     Token names kept so every existing usage cascades automatically. */
+  --font-sans: "Josefin Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Josefin Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
   /* Black & White palette — token names kept so components cascade automatically.
      Light surfaces = white/greys; "maroon" now = the black-block family;
@@ -28,8 +28,8 @@
 @layer base {
   body {
     @apply font-sans bg-cream text-charcoal antialiased overflow-x-hidden selection:bg-blush selection:text-charcoal;
-    /* Body: Cormorant Garamond, italic, weight 400 */
-    font-style: italic;
+    /* Body: Josefin Sans, weight 400 */
+    font-style: normal;
     font-weight: 400;
   }
 

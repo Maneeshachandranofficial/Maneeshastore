@@ -73,15 +73,15 @@ export default function Navigation() {
     : [];
 
   const linkClass = 'font-sans text-[11px] uppercase tracking-[0.18em] text-charcoal/70 hover:text-black transition-colors';
-  // 44×44 tap targets for mobile
-  const iconClass = 'relative flex h-11 w-11 items-center justify-center rounded-full text-charcoal transition-colors hover:text-black';
+  // Smaller icons on mobile (keeps the absolutely-centred logo clear); full 44px on desktop.
+  const iconClass = 'relative flex h-8 w-8 items-center justify-center rounded-full text-charcoal transition-colors hover:text-black md:h-11 md:w-11';
 
   return (
     <div ref={navRef} className="fixed inset-x-0 top-0 z-50">
       {/* Static full-width white bar */}
-      <header className="flex h-20 items-center justify-between border-b border-black/10 bg-white px-4 md:px-10">
+      <header className="relative flex h-20 items-center justify-between border-b border-black/10 bg-white px-4 md:px-10">
         {/* Left: 3-dot menu + (desktop) Collections / Bride / Groom */}
-        <div className="flex flex-1 items-center justify-start gap-6">
+        <div className="flex items-center gap-6">
           <button
             onClick={() => setIsMenuOpen(true)}
             aria-label="Open menu"
@@ -130,13 +130,18 @@ export default function Navigation() {
           </nav>
         </div>
 
-        {/* Center: logo lockup (black inline vector) */}
-        <Link href="/" aria-label="Maneesha Chandran — home" className="flex shrink-0 items-center justify-center px-3">
-          <LogoLockup className="h-11 w-auto text-black md:h-14" />
+        {/* Center: logo lockup — absolutely centred so it stays dead-centre
+            regardless of the differing side-cluster widths */}
+        <Link
+          href="/"
+          aria-label="Maneesha Chandran — home"
+          className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center"
+        >
+          <LogoLockup className="h-10 w-auto text-black md:h-14" />
         </Link>
 
         {/* Right: search, saved, cart */}
-        <div className="flex flex-1 items-center justify-end gap-1 md:gap-2">
+        <div className="flex items-center gap-0 md:gap-2">
           <button onClick={() => setIsSearchOpen(true)} aria-label="Search" className={iconClass}>
             <Search className="h-[18px] w-[18px]" />
           </button>
