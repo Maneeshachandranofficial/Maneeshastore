@@ -1,9 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Playfair+Display:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 @theme {
-  /* Brand typeface: clean geometric sans */
-  --font-sans: "Jost", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  /* Client typography: Playfair Display headings + Cormorant Garamond body.
+     Token names kept (--font-sans is the default/body) so every existing
+     `font-sans` usage becomes Cormorant automatically. */
+  --font-sans: "Cormorant Garamond", ui-serif, Georgia, "Times New Roman", serif;
+  --font-display: "Playfair Display", ui-serif, Georgia, serif;
 
   /* Black & White palette — token names kept so components cascade automatically.
      Light surfaces = white/greys; "maroon" now = the black-block family;
@@ -25,28 +28,55 @@
 @layer base {
   body {
     @apply font-sans bg-cream text-charcoal antialiased overflow-x-hidden selection:bg-blush selection:text-charcoal;
+    /* Body: Cormorant Garamond, italic, weight 400 */
+    font-style: italic;
+    font-weight: 400;
   }
 
+  /* Headings: Playfair Display, uppercase, tracked, weight 500.
+     !important so headings stay Playfair even where an element still
+     carries a `font-sans` utility class. */
   h1, h2, h3, h4, h5, h6 {
-    @apply font-sans font-normal tracking-wide;
+    font-family: var(--font-display) !important;
+    font-style: normal;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
   }
 }
 
-/* ---- Display type scale: couture feel from Jost via light weight + wide tracking ---- */
+/* ---- Display type scale (Playfair Display, uppercase, tracked) ---- */
 .display-xl {
-  @apply font-sans font-light leading-[1.02] tracking-[-0.01em];
-  font-size: clamp(2.75rem, 7vw, 6rem);
+  font-family: var(--font-display);
+  font-style: normal;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  line-height: 1.1;
+  font-size: clamp(2.4rem, 6vw, 5.25rem);
 }
 .display-lg {
-  @apply font-sans font-light leading-[1.05] tracking-[-0.01em];
-  font-size: clamp(2.25rem, 5vw, 4rem);
+  font-family: var(--font-display);
+  font-style: normal;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  line-height: 1.12;
+  font-size: clamp(2rem, 4.5vw, 3.5rem);
 }
 .display-md {
-  @apply font-sans font-light leading-[1.1] tracking-normal;
-  font-size: clamp(1.75rem, 3.5vw, 3rem);
+  font-family: var(--font-display);
+  font-style: normal;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  line-height: 1.18;
+  font-size: clamp(1.6rem, 3.2vw, 2.75rem);
 }
 .eyebrow {
-  @apply font-sans uppercase text-charcoal/50;
+  font-family: var(--font-display);
+  font-style: normal;
+  @apply uppercase text-charcoal/50;
   font-size: 0.7rem;
   letter-spacing: 0.35em;
 }
