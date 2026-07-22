@@ -42,7 +42,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               {product.name}
             </h3>
             {(product.priceOnRequest || product.price) && (
-              <span className="mt-1 max-h-0 overflow-hidden font-sans text-xs italic text-gold-light opacity-0 transition-all duration-500 group-hover:max-h-8 group-hover:opacity-100">
+              <span className="mt-1 max-h-0 overflow-hidden font-sans text-xs text-white opacity-0 transition-all duration-500 group-hover:max-h-8 group-hover:opacity-100">
                 {product.priceOnRequest ? 'Price on Request' : product.price}
               </span>
             )}

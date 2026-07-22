@@ -38,7 +38,7 @@ export default function CategoryCard({ href, label, caption, image, priority }: 
                 {caption}
               </p>
             )}
-            <span className="mt-5 inline-flex items-center gap-2 rounded-full bg-cream/90 px-6 py-2.5 font-sans text-[11px] uppercase tracking-[0.2em] text-charcoal backdrop-blur-sm transition-colors duration-300 group-hover:bg-gold group-hover:text-maroon-dark">
+            <span className="mt-5 inline-flex items-center gap-2 rounded-full bg-white/90 px-6 py-2.5 font-sans text-[11px] uppercase tracking-[0.2em] text-black backdrop-blur-sm transition-colors duration-300 group-hover:bg-black group-hover:text-white">
               Shop Now <ArrowRight className="h-3.5 w-3.5" />
             </span>
           </div>

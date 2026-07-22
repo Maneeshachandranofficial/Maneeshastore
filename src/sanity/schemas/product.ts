@@ -87,15 +87,18 @@ export default defineType({
     }),
     defineField({
       name: 'subCategory',
-      title: 'Sub Category',
+      title: 'Sub Category (collection filter tab)',
       type: 'string',
       group: 'categorisation',
+      description: 'Controls the filter tabs inside a collection. Eves Garden pieces → Bride or Groom. Onam pieces → Men, Women or Kids.',
       options: {
         list: [
-          { title: 'Adult', value: 'adult' },
-          { title: 'Kids', value: 'kids' },
+          { title: 'Bride', value: 'bride' },
+          { title: 'Groom', value: 'groom' },
           { title: 'Men', value: 'men' },
           { title: 'Women', value: 'women' },
+          { title: 'Kids', value: 'kids' },
+          { title: 'Adult', value: 'adult' },
         ],
       },
     }),

@@ -50,6 +50,22 @@ export const productByIdQuery = groq`
   }
 `;
 
+export const aboutPageQuery = groq`
+  *[_type == "aboutPage"][0] {
+    eyebrow,
+    heading,
+    intro,
+    "portrait": portrait.asset->url,
+    timelineHeading,
+    timeline[]{
+      year,
+      title,
+      description,
+      "image": image.asset->url
+    }
+  }
+`;
+
 export const siteSettingsQuery = groq`
   *[_type == "siteSettings"][0] {
     sloganLine1,

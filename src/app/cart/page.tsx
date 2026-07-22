@@ -1,7 +1,6 @@
 'use client';
 import Link from 'next/link';
 import { motion } from 'motion/react';
-import { products } from '@/data/store';
 import { X, ChevronRight } from 'lucide-react';
 import { useStore } from '@/context/StoreContext';
 

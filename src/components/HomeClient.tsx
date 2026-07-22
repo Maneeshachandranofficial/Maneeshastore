@@ -122,9 +122,9 @@ export default function HomeClient({
 
   return (
     <div className="bg-cream">
-      {/* ============ HERO ============ */}
-      <section className="px-3 pt-28 md:px-6 md:pt-32">
-        <div className="relative h-[calc(100dvh-7.5rem)] min-h-[540px] w-full overflow-hidden rounded-[1.75rem] bg-charcoal md:h-[calc(100dvh-8.5rem)] md:rounded-[2.5rem]">
+      {/* ============ HERO (full-bleed rectangle covering the screen) ============ */}
+      <section className="pt-20">
+        <div className="relative h-[calc(100dvh-5rem)] min-h-[520px] w-full overflow-hidden bg-charcoal">
           <AnimatePresence initial={false} custom={direction} mode="popLayout">
             <motion.div
               key={heroIndex}
@@ -156,12 +156,12 @@ export default function HomeClient({
               <h1 className="display-xl text-white">
                 {sloganLine1}
                 <br />
-                <span className="italic text-gold-light">{sloganLine2}</span>
+                <span className="text-white">{sloganLine2}</span>
               </h1>
               <div className="pointer-events-auto mt-9 flex flex-wrap items-center gap-4">
                 <Link
                   href="/lookbook"
-                  className="group inline-flex items-center gap-3 rounded-full bg-cream px-8 py-4 font-sans text-[11px] uppercase tracking-[0.2em] text-charcoal transition-colors hover:bg-gold hover:text-maroon-dark"
+                  className="group inline-flex items-center gap-3 rounded-full bg-white px-8 py-4 font-sans text-[11px] uppercase tracking-[0.2em] text-black transition-colors hover:bg-black hover:text-white"
                 >
                   Explore Lookbook
                   <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
@@ -170,7 +170,7 @@ export default function HomeClient({
                   href={calendlyUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full border border-white/40 px-8 py-4 font-sans text-[11px] uppercase tracking-[0.2em] text-white backdrop-blur-sm transition-colors hover:border-gold hover:text-gold-light"
+                  className="inline-flex items-center gap-2 rounded-full border border-white/50 px-8 py-4 font-sans text-[11px] uppercase tracking-[0.2em] text-white backdrop-blur-sm transition-colors hover:border-white hover:bg-white/10"
                 >
                   <Calendar className="h-4 w-4" /> Book Consultation
                 </a>
@@ -196,8 +196,10 @@ export default function HomeClient({
                 type="button"
                 onClick={(e) => { e.stopPropagation(); goToHero(idx); }}
                 aria-label={`Go to slide ${idx + 1}`}
-                className={`h-1.5 rounded-full transition-all duration-300 ${idx === heroIndex ? 'w-6 bg-gold' : 'w-1.5 bg-white/50 hover:bg-white/80'}`}
-              />
+                className="flex h-8 items-center px-1"
+              >
+                <span className={`block h-1.5 rounded-full transition-all duration-300 ${idx === heroIndex ? 'w-6 bg-white' : 'w-1.5 bg-white/50'}`} />
+              </button>
             ))}
           </div>
         </div>
@@ -253,12 +255,12 @@ export default function HomeClient({
       {/* ============ BRAND STORY ============ */}
       <section className="relative overflow-hidden bg-maroon px-6 py-28 text-white md:py-40">
         <Reveal className="relative z-10 mx-auto max-w-3xl text-center">
-          <LogoLockup className="mx-auto mb-14 h-14 w-auto text-gold opacity-95 md:h-20" />
+          <LogoLockup className="mx-auto mb-14 h-14 w-auto text-white opacity-95 md:h-20" />
           <span className="eyebrow mb-6 block text-gold-light/70">Our Philosophy</span>
           <h2 className="display-md text-white">
             {aboutHeading}
             <br />
-            <span className="italic text-gold-light">{aboutHeadingAccent}</span>
+            <span className="text-white">{aboutHeadingAccent}</span>
           </h2>
           <p className="mx-auto mt-8 max-w-2xl font-sans text-lg font-light leading-relaxed text-white/70">{aboutBody}</p>
         </Reveal>

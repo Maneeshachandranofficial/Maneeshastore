@@ -26,7 +26,7 @@ export default function CategoryClient({
       {/* Editorial Header */}
       <Reveal className="mb-14 flex flex-col items-center px-6 text-center">
         <span className="eyebrow mb-6">Maison de Couture</span>
-        <h1 className="display-lg text-charcoal">{category?.name || 'Collection'}</h1>
+        <h1 className="display-lg text-charcoal">{category?.name || 'Couture'}</h1>
         <span className="my-6 h-px w-12 bg-gold" />
         <p className="max-w-lg font-sans text-base font-light leading-relaxed text-charcoal/60 md:text-lg">
           {category?.description || 'Explore our curated selection of premium wear, crafted for elegance and poise.'}
@@ -41,7 +41,7 @@ export default function CategoryClient({
               key={filterName}
               onClick={() => setActiveFilter(filterName)}
               className={cn(
-                'rounded-full px-6 py-2.5 font-sans text-[11px] uppercase tracking-[0.18em] transition-all duration-300',
+                'rounded-full px-6 py-3 font-sans text-[11px] uppercase tracking-[0.18em] transition-all duration-300',
                 activeFilter === filterName
                   ? 'bg-maroon text-cream'
                   : 'border border-charcoal/15 text-charcoal/60 hover:border-charcoal hover:text-charcoal'

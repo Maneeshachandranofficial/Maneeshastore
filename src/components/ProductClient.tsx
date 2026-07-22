@@ -93,9 +93,6 @@ export default function ProductClient({ product }: { product: any }) {
               <div className="mb-12">
                 <div className="flex items-center justify-between mb-6">
                    <h3 className="font-sans tracking-widest text-xs uppercase text-charcoal font-medium">Select Size</h3>
-                   <button className="text-xs font-sans tracking-widest uppercase text-charcoal/60 hover:text-charcoal transition-colors border-b border-charcoal/20 pb-1">
-                     Size Guide
-                   </button>
                 </div>
                 <div className="flex flex-wrap gap-4">
                   {['S', 'M', 'L', 'XL'].map(size => (

@@ -29,9 +29,23 @@ export const structure: StructureResolver = (S) =>
         ),
       S.divider(),
       S.listItem()
-        .title('Site Settings')
-        .id('siteSettings')
+        .title('Pages')
         .child(
-          S.document().schemaType('siteSettings').documentId('siteSettings')
+          S.list()
+            .title('Pages')
+            .items([
+              S.listItem()
+                .title('Homepage & Site Settings')
+                .id('siteSettings')
+                .child(
+                  S.document().schemaType('siteSettings').documentId('siteSettings')
+                ),
+              S.listItem()
+                .title('About Page')
+                .id('aboutPage')
+                .child(
+                  S.document().schemaType('aboutPage').documentId('aboutPage')
+                ),
+            ])
         ),
     ])

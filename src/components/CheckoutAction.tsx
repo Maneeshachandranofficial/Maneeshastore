@@ -91,7 +91,7 @@ export default function CheckoutAction({ cart, standardItems, customItems, cartS
             placeholder="+91"
             value={whatsappNumber}
             onChange={(e) => setWhatsappNumber(e.target.value)}
-            className="w-full bg-cream border border-charcoal/15 rounded-full py-3 px-5 text-xs font-light text-charcoal outline-none focus:border-maroon transition-colors"
+            className="w-full bg-cream border border-charcoal/15 rounded-full py-3 px-5 text-base md:text-xs font-light text-charcoal outline-none focus:border-maroon transition-colors"
           />
           {error && <p className="text-maroon text-[10px] mt-1 tracking-wide">{error}</p>}
         </div>
