@@ -52,7 +52,8 @@ export async function POST(request: Request) {
     if (!res.ok) {
       const body = await res.text();
       console.error('Razorpay order creation failed:', res.status, body);
-      return NextResponse.json({ error: 'Could not start payment' }, { status: 502 });
+      // TEMP DEBUG: surface Razorpay's reason to diagnose live-key setup. Revert after.
+      return NextResponse.json({ error: 'Could not start payment', _debugStatus: res.status, _debugBody: body }, { status: 502 });
     }
 
     const order = await res.json();
