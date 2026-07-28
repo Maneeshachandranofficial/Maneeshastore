@@ -7,6 +7,7 @@ import { useState, useEffect, useRef } from 'react';
 import { cn } from '../utils/cn';
 import LogoLockup from './LogoLockup';
 import { useStore } from '../context/StoreContext';
+import { img } from '@/utils/img';
 
 type SearchItem = { id: string; name: string; image?: string | null; type: 'category' | 'collection' | 'product'; link: string };
 
@@ -18,13 +19,19 @@ const collectionLinks = [
   { href: '/category/parinaya-2026', label: "Parinaya '26" },
 ];
 
-const coutureLinks = [
+// Fallback used only if Sanity returns no nav categories (keeps the bar populated).
+const fallbackCoutureLinks = [
   { href: '/category/bride', label: 'Bride' },
   { href: '/category/groom', label: 'Groom' },
   { href: '/category/ethnic', label: 'Ethnic' },
 ];
 
-export default function Navigation() {
+export default function Navigation({ navCategories = [] }: { navCategories?: { id: string; name: string }[] }) {
+  // Client-managed categories drive the nav; fall back to the built-in list.
+  const coutureLinks = navCategories.length > 0
+    ? navCategories.map((c) => ({ href: `/category/${c.id}`, label: c.name }))
+    : fallbackCoutureLinks;
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isSavedOpen, setIsSavedOpen] = useState(false);
@@ -124,9 +131,9 @@ export default function Navigation() {
                 )}
               </AnimatePresence>
             </div>
-            <Link href="/category/bride" className={linkClass}>Bride</Link>
-            <Link href="/category/groom" className={linkClass}>Groom</Link>
-            <Link href="/category/ethnic" className={linkClass}>Ethnic</Link>
+            {coutureLinks.map((c) => (
+              <Link key={c.href} href={c.href} className={linkClass}>{c.label}</Link>
+            ))}
           </nav>
         </div>
 
@@ -172,7 +179,7 @@ export default function Navigation() {
                       {savedItems.map((item) => (
                         <div key={item.savedItemId} className="group relative flex items-center gap-4 border-b border-black/5 pb-4 last:border-0 last:pb-0">
                           <Link href={`/product/${item.id}`} onClick={() => setIsSavedOpen(false)} className="h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-ivory">
-                            <img src={item.image} alt={item.name} className="h-full w-full object-cover transition-opacity group-hover:opacity-80" />
+                            <img src={img(item.image, 160)} alt={item.name} loading="lazy" decoding="async" className="h-full w-full object-cover transition-opacity group-hover:opacity-80" />
                           </Link>
                           <div className="min-w-0 flex-grow">
                             <Link href={`/product/${item.id}`} onClick={() => setIsSavedOpen(false)} className="block truncate font-sans text-sm text-charcoal transition-colors hover:text-black">
@@ -326,7 +333,7 @@ export default function Navigation() {
                 >
                   <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-ivory">
                     {item.image ? (
-                      <img src={item.image} alt={item.name} className="h-full w-full object-cover transition-opacity group-hover:opacity-80" />
+                      <img src={img(item.image, 160)} alt={item.name} loading="lazy" decoding="async" className="h-full w-full object-cover transition-opacity group-hover:opacity-80" />
                     ) : (
                       <span className="font-sans text-lg text-charcoal/40">{item.name?.charAt(0)}</span>
                     )}

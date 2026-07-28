@@ -23,9 +23,30 @@ export const structure: StructureResolver = (S) =>
         ),
       S.divider(),
       S.listItem()
-        .title('Categories & Collections')
+        .title('Categories (main)')
         .child(
-          S.documentTypeList('category').title('Categories & Collections')
+          S.documentList()
+            .title('Main Categories')
+            .apiVersion('2024-01-01')
+            .filter('_type == "category" && !defined(parent) && isCollection != true')
+            .defaultOrdering([{ field: 'navOrder', direction: 'asc' }])
+        ),
+      S.listItem()
+        .title('Sub-categories (filter tabs)')
+        .child(
+          S.documentList()
+            .title('Sub-categories')
+            .apiVersion('2024-01-01')
+            .filter('_type == "category" && defined(parent)')
+            .defaultOrdering([{ field: 'navOrder', direction: 'asc' }])
+        ),
+      S.listItem()
+        .title('Collections')
+        .child(
+          S.documentList()
+            .title('Collections')
+            .apiVersion('2024-01-01')
+            .filter('_type == "category" && isCollection == true')
         ),
       S.divider(),
       S.listItem()

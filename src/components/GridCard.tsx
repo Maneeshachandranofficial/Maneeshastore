@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { motion } from 'motion/react';
+import { img, imgSrcSet } from '@/utils/img';
 import { ArrowUpRight } from 'lucide-react';
 
 interface GridCardProps {
@@ -16,8 +17,12 @@ export default function GridCard({ product }: GridCardProps) {
       <Link href={`/product/${product.id}`} className="group block relative overflow-hidden bg-charcoal w-full h-[60vh] md:h-[70vh]">
         {/* Background Image */}
         <img
-          src={product.image}
+          src={img(product.image, 900)}
+          srcSet={imgSrcSet(product.image, [500, 800, 1200])}
+          sizes="(max-width: 768px) 100vw, 50vw"
           alt={product.name}
+          loading="lazy"
+          decoding="async"
           className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 opacity-90 group-hover:opacity-100"
         />
 

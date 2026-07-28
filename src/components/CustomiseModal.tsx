@@ -1,4 +1,5 @@
 import { motion, AnimatePresence } from 'motion/react';
+import { img } from '@/utils/img';
 import { X, Mail, Phone } from 'lucide-react';
 import { Product } from '../context/StoreContext';
 
@@ -40,7 +41,7 @@ export default function CustomiseModal({ isOpen, onClose, product }: CustomiseMo
               
               <div className="flex gap-4 items-center mb-8 bg-ivory p-4 rounded-2xl border border-charcoal/10">
                 <div className="w-16 h-16 bg-cream rounded-lg border border-charcoal/10 shrink-0 overflow-hidden">
-                  <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                  <img src={img(product.image, 600)} alt={product.name} loading="lazy" decoding="async" className="w-full h-full object-cover" />
                 </div>
                 <div>
                   <p className="font-sans text-charcoal text-lg leading-tight">{product.name}</p>

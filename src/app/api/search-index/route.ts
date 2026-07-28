@@ -10,7 +10,9 @@ export async function GET() {
   try {
     const [prods, cats] = await Promise.all([
       client.fetch(allProductsQuery),
-      client.fetch('*[_type == "category"]{ "id": id, name, isCollection }'),
+      // Top-level categories & collections only — sub-categories are filter
+      // tabs inside a category, not standalone destinations.
+      client.fetch('*[_type == "category" && !defined(parent)]{ "id": id, name, isCollection }'),
     ]);
 
     const items = [

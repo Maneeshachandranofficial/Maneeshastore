@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { motion } from 'motion/react';
 import { ArrowUpRight } from 'lucide-react';
+import { img, imgSrcSet } from '@/utils/img';
 
 interface ProductCardProps {
   product: {
@@ -24,9 +25,12 @@ export default function ProductCard({ product }: ProductCardProps) {
       <Link href={`/product/${product.id}`} className="block">
         <div className="relative aspect-[3/4] w-full overflow-hidden rounded-2xl bg-ivory">
           <img
-            src={product.image}
+            src={img(product.image, 700)}
+            srcSet={imgSrcSet(product.image, [300, 500, 700, 900])}
+            sizes="(max-width: 768px) 45vw, (max-width: 1024px) 30vw, 22vw"
             alt={product.name}
             loading="lazy"
+            decoding="async"
             className="h-full w-full object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.06]"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent opacity-70 transition-opacity duration-500 group-hover:opacity-90" />

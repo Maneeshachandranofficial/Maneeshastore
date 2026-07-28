@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { motion } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
 import { cn } from '../utils/cn';
+import { img, imgSrcSet } from '@/utils/img';
 
 interface CollectionBannerProps {
   href: string;
@@ -28,7 +29,7 @@ export default function CollectionBanner({ href, name, description, image, index
           flip && 'md:order-2'
         )}
       >
-        <img src={image} alt={name} loading="lazy" className="h-full w-full object-cover object-[center_25%]" />
+        <img src={img(image, 900)} srcSet={imgSrcSet(image, [500, 800, 1100])} sizes="(max-width: 768px) 92vw, 50vw" alt={name} loading="lazy" decoding="async" className="h-full w-full object-cover object-[center_25%]" />
       </motion.div>
 
       <motion.div

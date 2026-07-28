@@ -7,8 +7,10 @@ export const allProductsQuery = groq`
     "price": price,
     "numericPrice": numericPrice,
     "image": image.asset->url,
-    "categoryId": category,
-    "subCategory": subCategory,
+    "categoryId": coalesce(categoryRef->id, category),
+    "categoryName": coalesce(categoryRef->name, category),
+    "subCategory": subCategoryRef->id,
+    "subCategoryName": subCategoryRef->name,
     "sizingType": sizingType,
     "collection": collection,
     "priceOnRequest": priceOnRequest,
@@ -41,13 +43,33 @@ export const productByIdQuery = groq`
     "price": price,
     "numericPrice": numericPrice,
     "image": image.asset->url,
-    "categoryId": category,
-    "subCategory": subCategory,
+    "categoryId": coalesce(categoryRef->id, category),
+    "categoryName": coalesce(categoryRef->name, category),
+    "subCategory": subCategoryRef->id,
+    "subCategoryName": subCategoryRef->name,
     "sizingType": sizingType,
     "collection": collection,
     "priceOnRequest": priceOnRequest,
     "isHero": isHero
   }
+`;
+
+// Main categories to show as links in the top nav bar (client-managed).
+export const navCategoriesQuery = groq`
+  *[_type == "category" && showInNav == true && !defined(parent) && isCollection != true]
+    | order(navOrder asc, name asc) {
+      "id": id,
+      "name": name
+    }
+`;
+
+// The sub-categories that belong to a given category (its filter tabs).
+export const subCategoriesForQuery = groq`
+  *[_type == "category" && defined(parent) && parent->id == $id]
+    | order(navOrder asc, name asc) {
+      "id": id,
+      "name": name
+    }
 `;
 
 export const aboutPageQuery = groq`

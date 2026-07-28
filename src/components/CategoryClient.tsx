@@ -7,18 +7,32 @@ import { cn } from '../utils/cn';
 export default function CategoryClient({
   products,
   category,
+  subCategories = [],
 }: {
   products: any[];
   category: any;
+  subCategories?: { id: string; name: string }[];
 }) {
-  const [activeFilter, setActiveFilter] = useState('All');
+  const [activeFilter, setActiveFilter] = useState('all');
 
-  const availableSubCategories = Array.from(new Set(products.map((p) => p.subCategory).filter(Boolean))) as string[];
-  const filters = ['All', ...availableSubCategories.map((c) => c.charAt(0).toUpperCase() + c.slice(1))];
+  // Which sub-categories actually have products shown here.
+  const usedSubIds = new Set(products.map((p) => p.subCategory).filter(Boolean));
+  // Prefer the client-defined sub-categories (ordered); fall back to any the
+  // products carry that aren't in the list yet.
+  const subs: { id: string; name: string }[] = [
+    ...subCategories.filter((s) => usedSubIds.has(s.id)),
+    ...Array.from(usedSubIds)
+      .filter((id) => !subCategories.some((s) => s.id === id))
+      .map((id) => {
+        const p = products.find((x) => x.subCategory === id);
+        return { id: id as string, name: (p?.subCategoryName || String(id)) as string };
+      }),
+  ];
+  const filters = [{ id: 'all', name: 'All' }, ...subs];
 
   let displayProducts = products;
-  if (activeFilter !== 'All') {
-    displayProducts = displayProducts.filter((p) => p.subCategory === activeFilter.toLowerCase());
+  if (activeFilter !== 'all') {
+    displayProducts = displayProducts.filter((p) => p.subCategory === activeFilter);
   }
 
   return (
@@ -36,18 +50,18 @@ export default function CategoryClient({
       {/* Subcategory filter pills */}
       {filters.length > 1 && (
         <div className="mb-16 flex w-full flex-wrap justify-center gap-3 px-6">
-          {filters.map((filterName) => (
+          {filters.map((f) => (
             <button
-              key={filterName}
-              onClick={() => setActiveFilter(filterName)}
+              key={f.id}
+              onClick={() => setActiveFilter(f.id)}
               className={cn(
                 'rounded-full px-6 py-3 font-sans text-[11px] uppercase tracking-[0.18em] transition-all duration-300',
-                activeFilter === filterName
+                activeFilter === f.id
                   ? 'bg-maroon text-cream'
                   : 'border border-charcoal/15 text-charcoal/60 hover:border-charcoal hover:text-charcoal'
               )}
             >
-              {filterName}
+              {f.name}
             </button>
           ))}
         </div>

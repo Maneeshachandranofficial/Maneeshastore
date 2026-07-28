@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { motion } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
+import { img, imgSrcSet } from '@/utils/img';
 
 interface CategoryCardProps {
   href: string;
@@ -22,9 +23,12 @@ export default function CategoryCard({ href, label, caption, image, priority }: 
       <Link href={href} className="block">
         <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[1.75rem] bg-charcoal">
           <img
-            src={image}
+            src={img(image, 800)}
+            srcSet={imgSrcSet(image, [400, 700, 1000])}
+            sizes="(max-width: 768px) 90vw, 33vw"
             alt={label}
             loading={priority ? 'eager' : 'lazy'}
+            decoding="async"
             className="h-full w-full object-cover transition-transform duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.07]"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />

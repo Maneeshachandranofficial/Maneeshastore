@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { motion } from 'motion/react';
 import { X, ChevronRight } from 'lucide-react';
 import { useStore } from '@/context/StoreContext';
+import { img } from '@/utils/img';
 
 export default function Cart() {
   const { cartItems, removeFromCart, updateCartQuantity } = useStore();
@@ -55,7 +56,7 @@ export default function Cart() {
                   className="flex gap-8 items-start relative group"
                 >
                   <Link href={`/product/${item.id}`} className="w-24 md:w-32 aspect-[3/4] overflow-hidden shrink-0 rounded-xl bg-ivory">
-                    <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
+                    <img src={img(item.image, 320)} alt={item.name} loading="lazy" decoding="async" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
                   </Link>
                   
                   <div className="flex-grow flex flex-col justify-between h-full py-2">

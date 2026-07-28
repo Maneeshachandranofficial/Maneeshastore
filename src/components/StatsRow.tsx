@@ -8,7 +8,7 @@ interface Stat {
 
 const DEFAULT_STATS: Stat[] = [
   { value: '500+', label: 'Bespoke pieces crafted' },
-  { value: '12+', label: 'Years of couture' },
+  { value: '3+', label: 'Years of couture' },
   { value: '20+', label: 'Cities delivered' },
   { value: '100%', label: 'Hand-finished' },
 ];

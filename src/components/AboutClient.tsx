@@ -2,6 +2,7 @@
 import { motion } from 'motion/react';
 import Reveal from '@/components/Reveal';
 import ConsultationCTA from '@/components/ConsultationCTA';
+import { img, imgSrcSet } from '@/utils/img';
 
 interface Milestone {
   year?: string;
@@ -41,7 +42,7 @@ export default function AboutClient({ about }: { about?: any }) {
         {about?.portrait && (
           <Reveal className="mt-14" delay={0.1}>
             <div className="relative mx-auto aspect-[4/5] max-h-[60vh] w-full max-w-md overflow-hidden rounded-[1.75rem] bg-ivory">
-              <img src={about.portrait} alt={heading} className="h-full w-full object-cover" />
+              <img src={img(about.portrait, 900)} srcSet={imgSrcSet(about.portrait, [500, 800, 1100])} sizes="(max-width: 768px) 92vw, 45vw" alt={heading} loading="lazy" decoding="async" className="h-full w-full object-cover" />
             </div>
           </Reveal>
         )}
@@ -81,7 +82,7 @@ export default function AboutClient({ about }: { about?: any }) {
                       <p className="mt-3 font-sans text-sm font-light leading-relaxed text-white/60">{m.description}</p>
                       {m.image && (
                         <div className="mt-5 overflow-hidden rounded-xl">
-                          <img src={m.image} alt={m.title || ''} className="h-48 w-full object-cover" />
+                          <img src={img(m.image, 600)} srcSet={imgSrcSet(m.image, [400, 600, 800])} sizes="(max-width: 768px) 92vw, 45vw" alt={m.title || ''} loading="lazy" decoding="async" className="h-48 w-full object-cover" />
                         </div>
                       )}
                     </div>

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Check } from 'lucide-react';
 import { useStore } from '@/context/StoreContext';
 import CheckoutAction from '@/components/CheckoutAction';
+import { img } from '@/utils/img';
 
 export default function CheckoutPage() {
   const { cartItems, removeFromCart, clearCart } = useStore();
@@ -113,7 +114,7 @@ export default function CheckoutPage() {
               {standardItems.map((item, index) => (
                 <div key={`${item.id}-${index}`} className="flex gap-5 border-b border-charcoal/10 py-7 md:gap-6 md:py-8">
                   <div className="h-28 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-ivory">
-                    <img src={item.image} alt={item.name} className="h-full w-full object-cover" />
+                    <img src={img(item.image, 160)} alt={item.name} loading="lazy" decoding="async" className="h-full w-full object-cover" />
                   </div>
                   <div className="flex flex-1 flex-col justify-between py-1">
                     <div>
@@ -146,7 +147,7 @@ export default function CheckoutPage() {
                   {customItems.map((item, index) => (
                     <div key={`${item.id}-custom-${index}`} className="flex gap-5 border-b border-charcoal/10 py-5 opacity-80 md:gap-6">
                       <div className="h-20 w-16 flex-shrink-0 overflow-hidden rounded-lg bg-ivory">
-                        <img src={item.image} alt={item.name} className="h-full w-full object-cover grayscale" />
+                        <img src={img(item.image, 160)} alt={item.name} loading="lazy" decoding="async" className="h-full w-full object-cover grayscale" />
                       </div>
                       <div className="flex flex-1 flex-col justify-between py-1">
                         <div>

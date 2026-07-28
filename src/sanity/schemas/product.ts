@@ -72,35 +72,51 @@ export default defineType({
 
     // ---------- Categorisation ----------
     defineField({
-      name: 'category',
+      name: 'categoryRef',
       title: 'Category',
+      type: 'reference',
+      group: 'categorisation',
+      to: [{ type: 'category' }],
+      description: 'Which main category this piece belongs to (Bride, Groom, Ethnic, Celebrities…). Pick from the categories you created. To add a new one, create a Category with no parent.',
+      // Only allow top-level categories here (not sub-categories, not collections)
+      options: { filter: '!defined(parent) && isCollection != true' },
+    }),
+    defineField({
+      name: 'subCategoryRef',
+      title: 'Sub Category (filter tab)',
+      type: 'reference',
+      group: 'categorisation',
+      to: [{ type: 'category' }],
+      description: 'Optional. The sub-section / filter tab inside its category (e.g. Kurtha Set, Blazer Set, Girls). Only sub-categories of the chosen Category are shown.',
+      // Show only sub-categories belonging to the chosen Category (falls back to
+      // all sub-categories if no category is picked yet).
+      options: {
+        filter: ({ document }: any) => {
+          const catRef = document?.categoryRef?._ref
+          if (catRef) {
+            return { filter: 'defined(parent) && parent._ref == $catRef', params: { catRef } }
+          }
+          return { filter: 'defined(parent)' }
+        },
+      },
+    }),
+    // --- Legacy string fields (kept, hidden) — safe for the old live site &
+    // for rollback. Superseded by categoryRef / subCategoryRef above. ---
+    defineField({
+      name: 'category',
+      title: 'Category (legacy)',
       type: 'string',
       group: 'categorisation',
-      options: {
-        list: [
-          { title: 'Bride', value: 'bride' },
-          { title: 'Groom', value: 'groom' },
-          { title: 'Ethnic', value: 'ethnic' },
-          { title: 'Kids', value: 'kids' },
-        ],
-      },
+      hidden: true,
+      readOnly: true,
     }),
     defineField({
       name: 'subCategory',
-      title: 'Sub Category (collection filter tab)',
+      title: 'Sub Category (legacy)',
       type: 'string',
       group: 'categorisation',
-      description: 'Controls the filter tabs inside a collection. Eves Garden pieces → Bride or Groom. Onam pieces → Men, Women or Kids.',
-      options: {
-        list: [
-          { title: 'Bride', value: 'bride' },
-          { title: 'Groom', value: 'groom' },
-          { title: 'Men', value: 'men' },
-          { title: 'Women', value: 'women' },
-          { title: 'Kids', value: 'kids' },
-          { title: 'Adult', value: 'adult' },
-        ],
-      },
+      hidden: true,
+      readOnly: true,
     }),
     defineField({
       name: 'collection',
@@ -150,7 +166,7 @@ export default defineType({
       media: 'image',
       isHero: 'isHero',
       priceOnRequest: 'priceOnRequest',
-      category: 'category',
+      category: 'categoryRef.name',
     },
     prepare({ title, price, media, isHero, priceOnRequest, category }) {
       const priceLabel = priceOnRequest ? 'Contact for Pricing' : price

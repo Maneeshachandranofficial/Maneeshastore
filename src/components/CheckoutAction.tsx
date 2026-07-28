@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { CartItem } from '@/context/StoreContext';
-import { motion } from 'motion/react';
+
+declare global {
+  interface Window { Razorpay?: any }
+}
 
 export interface CheckoutActionProps {
   cart: CartItem[];
@@ -8,6 +11,19 @@ export interface CheckoutActionProps {
   customItems?: CartItem[];
   cartSubtotal: number;
   onSuccess: () => void;
+}
+
+// Load the Razorpay checkout script once, on demand.
+function loadRazorpay(): Promise<boolean> {
+  return new Promise((resolve) => {
+    if (typeof window === 'undefined') return resolve(false);
+    if (window.Razorpay) return resolve(true);
+    const script = document.createElement('script');
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
 }
 
 export default function CheckoutAction({ cart, standardItems, customItems, cartSubtotal, onSuccess }: CheckoutActionProps) {
@@ -28,6 +44,7 @@ export default function CheckoutAction({ cart, standardItems, customItems, cartS
     setError('');
     setIsProcessing(true);
 
+    // For a mixed cart, forward the custom pieces to Maneesha as an inquiry.
     if (isMixedCart) {
       try {
         await fetch('/api/custom-inquiry', {
@@ -39,20 +56,70 @@ export default function CheckoutAction({ cart, standardItems, customItems, cartS
         console.error('Failed to send inquiry', err);
       }
     }
-    
-    // Simulate Razorpay mock flow
-    setTimeout(() => {
+
+    // Pay for the standard items via Razorpay.
+    const payItems = (standardItems && standardItems.length ? standardItems : cart);
+    try {
+      const ok = await loadRazorpay();
+      if (!ok) throw new Error('Could not load the payment window. Please try again.');
+
+      // 1) Create the order server-side (amount is computed there, not here).
+      const orderRes = await fetch('/api/razorpay/order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items: payItems.map((i) => ({ id: i.id, quantity: i.quantity })) }),
+      });
+      const order = await orderRes.json();
+      if (!orderRes.ok) throw new Error(order?.error || 'Could not start payment.');
+
+      // 2) Open the Razorpay checkout popup.
+      const rzp = new window.Razorpay({
+        key: order.keyId,
+        order_id: order.orderId,
+        amount: order.amount,
+        currency: order.currency,
+        name: 'Maneesha Chandran',
+        description: 'Couture order',
+        theme: { color: '#4B272D' },
+        prefill: whatsappNumber ? { contact: whatsappNumber } : {},
+        handler: async (resp: any) => {
+          // 3) Verify the payment signature server-side before confirming.
+          try {
+            const vRes = await fetch('/api/razorpay/verify', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                razorpay_order_id: resp.razorpay_order_id,
+                razorpay_payment_id: resp.razorpay_payment_id,
+                razorpay_signature: resp.razorpay_signature,
+                items: payItems.map((i) => ({ id: i.id, name: i.name, quantity: i.quantity, size: i.size })),
+              }),
+            });
+            const v = await vRes.json();
+            setIsProcessing(false);
+            if (v.valid) onSuccess();
+            else setError('We could not verify your payment. If money was deducted, please contact us.');
+          } catch (err) {
+            console.error('Verification error', err);
+            setIsProcessing(false);
+            setError('Payment verification failed. Please contact us.');
+          }
+        },
+        modal: {
+          ondismiss: () => setIsProcessing(false),
+        },
+      });
+      rzp.on('payment.failed', (resp: any) => {
+        console.error('Razorpay payment failed', resp?.error);
+        setIsProcessing(false);
+        setError(resp?.error?.description || 'Payment failed. Please try again.');
+      });
+      rzp.open();
+    } catch (err: any) {
+      console.error('Checkout error', err);
       setIsProcessing(false);
-      onSuccess();
-    }, 2000);
-    
-    /*
-     * ==========================================================================
-     * RAZORPAY_INTEGRATION_POINT
-     * --------------------------------------------------------------------------
-     * Options config goes here...
-     * ==========================================================================
-     */
+      setError(err?.message || 'Something went wrong starting the payment.');
+    }
   };
 
   const getWhatsAppLink = () => {
@@ -107,6 +174,11 @@ export default function CheckoutAction({ cart, standardItems, customItems, cartS
             (hasCustom ? 'Pay for Standard Items' : 'Pay Securely via Razorpay')
           }
         </button>
+      )}
+
+      {/* Payment error (shown for standard-only carts too) */}
+      {error && !isMixedCart && (
+        <p className="text-maroon text-[11px] text-center tracking-wide">{error}</p>
       )}
 
       <a

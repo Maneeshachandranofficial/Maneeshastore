@@ -2,6 +2,7 @@
 import { motion, AnimatePresence } from 'motion/react';
 import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
+import { img, imgSrcSet } from '@/utils/img';
 import { useRouter } from 'next/navigation';
 import { ArrowRight, ChevronLeft, ChevronRight, Calendar } from 'lucide-react';
 import ProductCard from '@/components/ProductCard';
@@ -138,8 +139,12 @@ export default function HomeClient({
               onClick={() => navigate.push(`/product/${heroImages[heroIndex].id}`)}
             >
               <img
-                src={heroImages[heroIndex].image}
+                src={img(heroImages[heroIndex].image, 1600, 82)}
+                srcSet={imgSrcSet(heroImages[heroIndex].image, [640, 1080, 1600, 2000], 82)}
+                sizes="100vw"
                 alt="Featured Maneesha Chandran couture"
+                fetchPriority="high"
+                decoding="async"
                 className="h-full w-full object-cover object-[center_28%]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-black/30" />

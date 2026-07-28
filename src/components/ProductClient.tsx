@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'motion/react';
+import { img, imgSrcSet } from '@/utils/img';
 import { ArrowLeft, Heart, Share2 } from 'lucide-react';
 import { cn } from '@/utils/cn';
 import { useStore } from '@/context/StoreContext';
@@ -63,8 +64,12 @@ export default function ProductClient({ product }: { product: any }) {
               <div className="flex w-full items-center justify-center rounded-2xl bg-ivory p-4 md:rounded-[1.75rem] md:p-8">
                 <div className="relative flex max-h-[75vh] w-full justify-center overflow-hidden rounded-xl">
                   <img
-                    src={product.image}
+                    src={img(product.image, 1300, 85)}
+                    srcSet={imgSrcSet(product.image, [600, 900, 1300, 1600], 85)}
+                    sizes="(max-width: 768px) 92vw, 48vw"
                     alt={product.name}
+                    fetchPriority="high"
+                    decoding="async"
                     className="h-auto max-h-[75vh] w-auto max-w-full object-contain transition-transform duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-105"
                   />
                 </div>
