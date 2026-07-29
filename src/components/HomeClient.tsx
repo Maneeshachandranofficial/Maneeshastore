@@ -124,8 +124,8 @@ export default function HomeClient({
   return (
     <div className="bg-cream">
       {/* ============ HERO (full-bleed rectangle covering the screen) ============ */}
-      <section className="pt-20 md:pt-24">
-        <div className="relative h-[calc(100dvh-5rem)] min-h-[520px] w-full overflow-hidden bg-charcoal md:h-[calc(100dvh-6rem)]">
+      <section className="pt-28 md:pt-[8.5rem]">
+        <div className="relative h-[calc(100dvh-7rem)] min-h-[520px] w-full overflow-hidden bg-charcoal md:h-[calc(100dvh-8.5rem)]">
           <AnimatePresence initial={false} custom={direction} mode="popLayout">
             <motion.div
               key={heroIndex}
@@ -154,10 +154,6 @@ export default function HomeClient({
           {/* Slogan */}
           <div className="pointer-events-none absolute inset-0 flex flex-col justify-end p-7 md:p-14 lg:p-20">
             <Reveal className="max-w-2xl" delay={0.2}>
-              <span className="mb-6 flex items-center gap-4">
-                <span className="h-px w-12 bg-gold" />
-                <span className="eyebrow text-gold-light/90">Maison de Couture</span>
-              </span>
               <h1 className="display-xl text-white">
                 {sloganLine1}
                 <br />

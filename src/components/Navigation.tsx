@@ -85,135 +85,137 @@ export default function Navigation({ navCategories = [] }: { navCategories?: { i
 
   return (
     <div ref={navRef} className="fixed inset-x-0 top-0 z-50">
-      {/* Static full-width white bar */}
-      <header className="relative flex h-20 items-center justify-between border-b border-black/10 bg-white px-4 md:h-24 md:px-10">
-        {/* Left: 3-dot menu + (desktop) Collections / Bride / Groom */}
-        <div className="flex items-center gap-6">
-          <button
-            onClick={() => setIsMenuOpen(true)}
-            aria-label="Open menu"
-            className="-ml-1.5 flex h-11 w-11 items-center justify-center rounded-full text-charcoal transition-colors hover:text-black"
-          >
-            <MoreHorizontal className="h-6 w-6" />
-          </button>
+      {/* Two-tier white bar. Total height 112px mobile / 136px desktop —
+          page top padding (pt-44 md:pt-[13.5rem]) and the BackButton offset
+          are keyed to this, so update those together if the heights change. */}
+      <header className="border-b border-black/10 bg-white">
+        {/* Tier 1 — monogram + wordmark, centred on its own line */}
+        <div className="flex h-16 items-center justify-center px-4 md:h-20 md:px-10">
+          <Link href="/" aria-label="Maneesha Chandran — home" className="flex items-center justify-center">
+            <LogoLockup className="h-11 w-auto text-black md:h-14" />
+          </Link>
+        </div>
 
-          <nav className="hidden items-center gap-7 lg:flex">
-            <div
-              className="relative"
-              onMouseEnter={() => setIsCollectionsOpen(true)}
-              onMouseLeave={() => setIsCollectionsOpen(false)}
+        {/* Tier 2 — navigation left, utilities right, on one horizontal line */}
+        <div className="flex h-12 items-center justify-between border-t border-black/5 px-4 md:h-14 md:px-10">
+          {/* Left: 3-dot menu + (desktop) Collections / Bride / Groom */}
+          <div className="flex items-center gap-4 md:gap-6">
+            <button
+              onClick={() => setIsMenuOpen(true)}
+              aria-label="Open menu"
+              className="-ml-1.5 flex h-9 w-9 items-center justify-center rounded-full text-charcoal transition-colors hover:text-black md:h-10 md:w-10"
             >
-              <button className={cn(linkClass, 'flex items-center gap-1')}>
-                Collections <ChevronDown className="h-3 w-3" />
+              <MoreHorizontal className="h-6 w-6" />
+            </button>
+
+            <nav className="hidden items-center gap-7 lg:flex">
+              <div
+                className="relative"
+                onMouseEnter={() => setIsCollectionsOpen(true)}
+                onMouseLeave={() => setIsCollectionsOpen(false)}
+              >
+                <button className={cn(linkClass, 'flex items-center gap-1')}>
+                  Collections <ChevronDown className="h-3 w-3" />
+                </button>
+                <AnimatePresence>
+                  {isCollectionsOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 8 }}
+                      transition={{ duration: 0.2 }}
+                      className="absolute left-0 top-full w-60 pt-4"
+                    >
+                      <div className="flex flex-col gap-1 rounded-2xl bg-black p-3 shadow-2xl">
+                        {collectionLinks.map((c) => (
+                          <Link
+                            key={c.href}
+                            href={c.href}
+                            onClick={() => setIsCollectionsOpen(false)}
+                            className="rounded-xl px-4 py-2.5 font-sans text-[11px] uppercase tracking-[0.16em] text-white/75 transition-colors hover:bg-white/10 hover:text-white"
+                          >
+                            {c.label}
+                          </Link>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+              {coutureLinks.map((c) => (
+                <Link key={c.href} href={c.href} className={linkClass}>{c.label}</Link>
+              ))}
+            </nav>
+          </div>
+
+          {/* Right: search, saved, cart */}
+          <div className="flex items-center gap-0 md:gap-2">
+            <button onClick={() => setIsSearchOpen(true)} aria-label="Search" className={iconClass}>
+              <Search className="h-[18px] w-[18px]" />
+            </button>
+
+            <div className="relative">
+              <button onClick={() => setIsSavedOpen(!isSavedOpen)} aria-label="Saved items" className={iconClass}>
+                <Heart className={cn('h-[18px] w-[18px] transition-colors', savedItems.length > 0 && 'fill-black text-black')} />
+                {savedItems.length > 0 && <span className="absolute right-1 top-1 h-2 w-2 rounded-full bg-black" />}
               </button>
               <AnimatePresence>
-                {isCollectionsOpen && (
+                {isSavedOpen && (
                   <motion.div
-                    initial={{ opacity: 0, y: 8 }}
+                    initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 8 }}
-                    transition={{ duration: 0.2 }}
-                    className="absolute left-0 top-full w-60 pt-4"
+                    exit={{ opacity: 0, y: 10 }}
+                    className="absolute right-0 top-full z-50 mt-4 flex w-[320px] flex-col gap-4 rounded-2xl border border-black/10 bg-white p-6 shadow-2xl"
                   >
-                    <div className="flex flex-col gap-1 rounded-2xl bg-black p-3 shadow-2xl">
-                      {collectionLinks.map((c) => (
-                        <Link
-                          key={c.href}
-                          href={c.href}
-                          onClick={() => setIsCollectionsOpen(false)}
-                          className="rounded-xl px-4 py-2.5 font-sans text-[11px] uppercase tracking-[0.16em] text-white/75 transition-colors hover:bg-white/10 hover:text-white"
-                        >
-                          {c.label}
-                        </Link>
-                      ))}
+                    <div className="mb-2 flex items-center justify-between">
+                      <h3 className="font-sans text-lg text-charcoal">Saved Items</h3>
+                      <button onClick={() => setIsSavedOpen(false)} className="text-charcoal/40 transition-colors hover:text-charcoal">
+                        <X className="h-4 w-4" />
+                      </button>
                     </div>
+                    {savedItems.length === 0 ? (
+                      <p className="py-4 text-center text-sm font-light text-charcoal/50">No items saved yet.</p>
+                    ) : (
+                      <div className="flex max-h-[60vh] flex-col gap-4 overflow-y-auto pr-2">
+                        {savedItems.map((item) => (
+                          <div key={item.savedItemId} className="group relative flex items-center gap-4 border-b border-black/5 pb-4 last:border-0 last:pb-0">
+                            <Link href={`/product/${item.id}`} onClick={() => setIsSavedOpen(false)} className="h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-ivory">
+                              <img src={img(item.image, 160)} alt={item.name} loading="lazy" decoding="async" className="h-full w-full object-cover transition-opacity group-hover:opacity-80" />
+                            </Link>
+                            <div className="min-w-0 flex-grow">
+                              <Link href={`/product/${item.id}`} onClick={() => setIsSavedOpen(false)} className="block truncate font-sans text-sm text-charcoal transition-colors hover:text-black">
+                                {item.name}
+                              </Link>
+                              <p className="mt-1 font-sans text-xs text-charcoal/50">{item.price}</p>
+                            </div>
+                            <div className="flex shrink-0 flex-col gap-2">
+                              <button
+                                onClick={() => { moveToCart(item.savedItemId); setIsSavedOpen(false); navigate.push('/cart'); }}
+                                className="flex h-8 w-8 items-center justify-center rounded-lg bg-black text-white transition-opacity hover:opacity-80"
+                              >
+                                <ShoppingBag className="h-3 w-3" />
+                              </button>
+                              <button
+                                onClick={() => removeFromSaved(item.savedItemId)}
+                                className="flex h-8 w-8 items-center justify-center rounded-lg border border-black/15 text-charcoal/50 transition-colors hover:text-black"
+                              >
+                                <X className="h-3 w-3" />
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </motion.div>
                 )}
               </AnimatePresence>
             </div>
-            {coutureLinks.map((c) => (
-              <Link key={c.href} href={c.href} className={linkClass}>{c.label}</Link>
-            ))}
-          </nav>
-        </div>
 
-        {/* Center: logo lockup — absolutely centred so it stays dead-centre
-            regardless of the differing side-cluster widths */}
-        <Link
-          href="/"
-          aria-label="Maneesha Chandran — home"
-          className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-[79%] items-center justify-center"
-        >
-          <LogoLockup className="h-10 w-auto text-black md:h-14" />
-        </Link>
-
-        {/* Right: search, saved, cart */}
-        <div className="flex items-center gap-0 md:gap-2">
-          <button onClick={() => setIsSearchOpen(true)} aria-label="Search" className={iconClass}>
-            <Search className="h-[18px] w-[18px]" />
-          </button>
-
-          <div className="relative">
-            <button onClick={() => setIsSavedOpen(!isSavedOpen)} aria-label="Saved items" className={iconClass}>
-              <Heart className={cn('h-[18px] w-[18px] transition-colors', savedItems.length > 0 && 'fill-black text-black')} />
-              {savedItems.length > 0 && <span className="absolute right-1 top-1 h-2 w-2 rounded-full bg-black" />}
-            </button>
-            <AnimatePresence>
-              {isSavedOpen && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 10 }}
-                  className="absolute right-0 top-full z-50 mt-4 flex w-[320px] flex-col gap-4 rounded-2xl border border-black/10 bg-white p-6 shadow-2xl"
-                >
-                  <div className="mb-2 flex items-center justify-between">
-                    <h3 className="font-sans text-lg text-charcoal">Saved Items</h3>
-                    <button onClick={() => setIsSavedOpen(false)} className="text-charcoal/40 transition-colors hover:text-charcoal">
-                      <X className="h-4 w-4" />
-                    </button>
-                  </div>
-                  {savedItems.length === 0 ? (
-                    <p className="py-4 text-center text-sm font-light text-charcoal/50">No items saved yet.</p>
-                  ) : (
-                    <div className="flex max-h-[60vh] flex-col gap-4 overflow-y-auto pr-2">
-                      {savedItems.map((item) => (
-                        <div key={item.savedItemId} className="group relative flex items-center gap-4 border-b border-black/5 pb-4 last:border-0 last:pb-0">
-                          <Link href={`/product/${item.id}`} onClick={() => setIsSavedOpen(false)} className="h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-ivory">
-                            <img src={img(item.image, 160)} alt={item.name} loading="lazy" decoding="async" className="h-full w-full object-cover transition-opacity group-hover:opacity-80" />
-                          </Link>
-                          <div className="min-w-0 flex-grow">
-                            <Link href={`/product/${item.id}`} onClick={() => setIsSavedOpen(false)} className="block truncate font-sans text-sm text-charcoal transition-colors hover:text-black">
-                              {item.name}
-                            </Link>
-                            <p className="mt-1 font-sans text-xs text-charcoal/50">{item.price}</p>
-                          </div>
-                          <div className="flex shrink-0 flex-col gap-2">
-                            <button
-                              onClick={() => { moveToCart(item.savedItemId); setIsSavedOpen(false); navigate.push('/cart'); }}
-                              className="flex h-8 w-8 items-center justify-center rounded-lg bg-black text-white transition-opacity hover:opacity-80"
-                            >
-                              <ShoppingBag className="h-3 w-3" />
-                            </button>
-                            <button
-                              onClick={() => removeFromSaved(item.savedItemId)}
-                              className="flex h-8 w-8 items-center justify-center rounded-lg border border-black/15 text-charcoal/50 transition-colors hover:text-black"
-                            >
-                              <X className="h-3 w-3" />
-                            </button>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </motion.div>
-              )}
-            </AnimatePresence>
+            <Link href="/cart" aria-label="Cart" className={iconClass}>
+              <ShoppingBag className="h-[18px] w-[18px]" />
+              {cartItems.length > 0 && <span className="absolute right-1 top-1 h-2 w-2 rounded-full bg-black" />}
+            </Link>
           </div>
-
-          <Link href="/cart" aria-label="Cart" className={iconClass}>
-            <ShoppingBag className="h-[18px] w-[18px]" />
-            {cartItems.length > 0 && <span className="absolute right-1 top-1 h-2 w-2 rounded-full bg-black" />}
-          </Link>
         </div>
       </header>
 

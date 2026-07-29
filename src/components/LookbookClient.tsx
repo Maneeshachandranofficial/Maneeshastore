@@ -4,7 +4,7 @@ import Reveal from '@/components/Reveal';
 
 export default function LookbookClient({ displayProducts }: { displayProducts: any[] }) {
   return (
-    <div className="min-h-screen bg-cream pb-32 pt-36 md:pt-44">
+    <div className="min-h-screen bg-cream pb-32 pt-44 md:pt-[13.5rem]">
       {/* Editorial Header */}
       <Reveal className="mb-16 flex flex-col items-center px-6 text-center">
         <span className="eyebrow mb-6">The Atelier</span>

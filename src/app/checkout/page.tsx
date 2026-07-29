@@ -97,7 +97,7 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="min-h-screen bg-cream px-4 pb-20 pt-36 text-charcoal sm:px-8 md:px-16 md:pt-44 lg:px-24">
+    <div className="min-h-screen bg-cream px-4 pb-20 pt-44 text-charcoal sm:px-8 md:px-16 md:pt-[13.5rem] lg:px-24">
       <main className="mx-auto max-w-[1100px]">
         {/* Title */}
         <div className="mb-10 text-center md:mb-14">

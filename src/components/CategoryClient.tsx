@@ -36,7 +36,7 @@ export default function CategoryClient({
   }
 
   return (
-    <div className="min-h-screen bg-cream pb-32 pt-36 md:pt-44">
+    <div className="min-h-screen bg-cream pb-32 pt-44 md:pt-[13.5rem]">
       {/* Editorial Header */}
       <Reveal className="mb-14 flex flex-col items-center px-6 text-center">
         <span className="eyebrow mb-6">Maison de Couture</span>

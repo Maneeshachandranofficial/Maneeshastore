@@ -21,12 +21,23 @@ export default defineType({
     }),
     defineField({
       name: 'image',
-      title: 'Product Photo',
+      title: 'Main Photo (cover)',
       type: 'image',
       group: 'content',
-      description: 'Upload the main product photo (portrait works best). Drag the hotspot to keep the subject centred when cropped.',
+      description:
+        'This is the picture that leads. It shows on the home page, the category grids and search results, and it is always the FIRST photo on the product page. To change which picture people see first, replace this one. Portrait works best — drag the hotspot to keep the piece centred when cropped.',
       options: { hotspot: true },
       validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'gallery',
+      title: 'More Photos',
+      type: 'array',
+      group: 'content',
+      of: [{ type: 'image', options: { hotspot: true } }],
+      description:
+        'Optional. Other angles of the same piece — back, side, close-ups of the work, the drape. On the product page customers move through these with the arrows (or by swiping) in the order shown here, after the main photo. Drag to reorder.',
+      options: { layout: 'grid' },
     }),
     defineField({
       name: 'description',
@@ -167,12 +178,18 @@ export default defineType({
       isHero: 'isHero',
       priceOnRequest: 'priceOnRequest',
       category: 'categoryRef.name',
+      gallery: 'gallery',
     },
-    prepare({ title, price, media, isHero, priceOnRequest, category }) {
+    prepare({ title, price, media, isHero, priceOnRequest, category, gallery }) {
       const priceLabel = priceOnRequest ? 'Contact for Pricing' : price
+      // Cover + extras, so it's obvious which pieces still need more angles.
+      const photoCount = (media ? 1 : 0) + (gallery?.length || 0)
+      const photoLabel = photoCount > 1 ? `${photoCount} photos` : '1 photo'
       return {
         title: title || 'Untitled product',
-        subtitle: [category, priceLabel, isHero ? '★ Hero' : null].filter(Boolean).join('  ·  '),
+        subtitle: [category, priceLabel, photoLabel, isHero ? '★ Hero' : null]
+          .filter(Boolean)
+          .join('  ·  '),
         media,
       }
     },

@@ -29,7 +29,7 @@ export default function AboutClient({ about }: { about?: any }) {
   const timeline: Milestone[] = about?.timeline?.length ? about.timeline : DEFAULT_TIMELINE;
 
   return (
-    <div className="min-h-screen bg-cream pt-36 md:pt-44">
+    <div className="min-h-screen bg-cream pt-44 md:pt-[13.5rem]">
       {/* Intro */}
       <section className="mx-auto max-w-4xl px-6 pb-20 text-center md:pb-28">
         <Reveal>

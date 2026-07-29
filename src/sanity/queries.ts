@@ -43,6 +43,7 @@ export const productByIdQuery = groq`
     "price": price,
     "numericPrice": numericPrice,
     "image": image.asset->url,
+    "gallery": gallery[].asset->url,
     "categoryId": coalesce(categoryRef->id, category),
     "categoryName": coalesce(categoryRef->name, category),
     "subCategory": subCategoryRef->id,

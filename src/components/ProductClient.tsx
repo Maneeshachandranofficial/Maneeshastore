@@ -3,11 +3,11 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'motion/react';
-import { img, imgSrcSet } from '@/utils/img';
 import { ArrowLeft, Heart, Share2 } from 'lucide-react';
 import { cn } from '@/utils/cn';
 import { useStore } from '@/context/StoreContext';
 import CustomiseModal from '@/components/CustomiseModal';
+import ProductGallery from '@/components/ProductGallery';
 
 export default function ProductClient({ product }: { product: any }) {
   const navigate = useRouter();
@@ -16,6 +16,12 @@ export default function ProductClient({ product }: { product: any }) {
   const [selectedSize, setSelectedSize] = useState('M');
   const [showCustomiseModal, setShowCustomiseModal] = useState(false);
   const isEnquiry = product?.sizingType === 'customise' || product?.priceOnRequest === true;
+
+  // Main photo first, then the extra gallery photos. Deduped so a piece whose
+  // cover is also repeated in the gallery doesn't render twice.
+  const images: string[] = Array.from(
+    new Set([product?.image, ...(product?.gallery ?? [])].filter(Boolean))
+  ) as string[];
 
   const saved = product ? isSaved(product.id, selectedSize) : false;
 
@@ -33,7 +39,7 @@ export default function ProductClient({ product }: { product: any }) {
   };
 
   return (
-    <div className="bg-cream min-h-screen pt-40 pb-32">
+    <div className="bg-cream min-h-screen pt-48 md:pt-[12.5rem] pb-32">
       <div className="max-w-7xl mx-auto px-6">
 
         {/* Breadcrumb */}
@@ -55,34 +61,21 @@ export default function ProductClient({ product }: { product: any }) {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-start">
 
-          <div className="lg:col-span-5 flex flex-col gap-6">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <div className="flex w-full items-center justify-center rounded-2xl bg-ivory p-4 md:rounded-[1.75rem] md:p-8">
-                <div className="relative flex max-h-[75vh] w-full justify-center overflow-hidden rounded-xl">
-                  <img
-                    src={img(product.image, 1300, 85)}
-                    srcSet={imgSrcSet(product.image, [600, 900, 1300, 1600], 85)}
-                    sizes="(max-width: 768px) 92vw, 48vw"
-                    alt={product.name}
-                    fetchPriority="high"
-                    decoding="async"
-                    className="h-auto max-h-[75vh] w-auto max-w-full object-contain transition-transform duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-105"
-                  />
-                </div>
-              </div>
-            </motion.div>
-          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-5"
+          >
+            <ProductGallery images={images} name={product.name} />
+          </motion.div>
 
           {/* Product Details */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-7 sticky top-40 flex flex-col pt-8"
+            className="lg:col-span-7 lg:sticky lg:top-[9.5rem] flex flex-col pt-8"
           >
             <div className="mb-12">
               <h1 className="font-sans text-4xl md:text-5xl text-charcoal mb-4 leading-tight">{product.name}</h1>

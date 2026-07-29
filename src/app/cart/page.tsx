@@ -23,7 +23,7 @@ export default function Cart() {
   };
   
   return (
-    <div className="bg-cream min-h-screen pt-40 pb-32">
+    <div className="bg-cream min-h-screen pt-44 md:pt-[13.5rem] pb-32">
       <div className="max-w-6xl mx-auto px-6">
         
         <motion.div 
