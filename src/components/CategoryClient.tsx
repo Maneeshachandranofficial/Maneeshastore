@@ -39,7 +39,6 @@ export default function CategoryClient({
     <div className="min-h-screen bg-cream pb-32 pt-44 md:pt-[13.5rem]">
       {/* Editorial Header */}
       <Reveal className="mb-14 flex flex-col items-center px-6 text-center">
-        <span className="eyebrow mb-6">Maison de Couture</span>
         <h1 className="display-lg text-charcoal">{category?.name || 'Couture'}</h1>
         <span className="my-6 h-px w-12 bg-gold" />
         <p className="max-w-lg font-sans text-base font-light leading-relaxed text-charcoal/60 md:text-lg">
