@@ -124,8 +124,8 @@ export default function HomeClient({
   return (
     <div className="bg-cream">
       {/* ============ HERO (full-bleed rectangle covering the screen) ============ */}
-      <section className="pt-20">
-        <div className="relative h-[calc(100dvh-5rem)] min-h-[520px] w-full overflow-hidden bg-charcoal">
+      <section className="pt-20 md:pt-24">
+        <div className="relative h-[calc(100dvh-5rem)] min-h-[520px] w-full overflow-hidden bg-charcoal md:h-[calc(100dvh-6rem)]">
           <AnimatePresence initial={false} custom={direction} mode="popLayout">
             <motion.div
               key={heroIndex}

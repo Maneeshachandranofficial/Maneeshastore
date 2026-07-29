@@ -86,7 +86,7 @@ export default function Navigation({ navCategories = [] }: { navCategories?: { i
   return (
     <div ref={navRef} className="fixed inset-x-0 top-0 z-50">
       {/* Static full-width white bar */}
-      <header className="relative flex h-20 items-center justify-between border-b border-black/10 bg-white px-4 md:px-10">
+      <header className="relative flex h-20 items-center justify-between border-b border-black/10 bg-white px-4 md:h-24 md:px-10">
         {/* Left: 3-dot menu + (desktop) Collections / Bride / Groom */}
         <div className="flex items-center gap-6">
           <button
@@ -142,7 +142,7 @@ export default function Navigation({ navCategories = [] }: { navCategories?: { i
         <Link
           href="/"
           aria-label="Maneesha Chandran — home"
-          className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center"
+          className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-[79%] items-center justify-center"
         >
           <LogoLockup className="h-10 w-auto text-black md:h-14" />
         </Link>

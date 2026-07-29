@@ -10,7 +10,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 // learns a sale happened).
 export async function POST(request: Request) {
   try {
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature, items } = await request.json();
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature, items, delivery } = await request.json();
     const secret = process.env.RAZORPAY_KEY_SECRET;
     if (!secret) return NextResponse.json({ valid: false, error: 'not configured' }, { status: 500 });
 
@@ -51,6 +51,17 @@ export async function POST(request: Request) {
       const itemsList = Array.isArray(items) && items.length
         ? items.map((i: any) => `- ${i.name || i.id}${i.quantity ? ` × ${i.quantity}` : ''}${i.size ? ` (Size: ${i.size})` : ''}`).join('<br/>')
         : '(items unavailable)';
+      const esc = (s: any) => String(s ?? '').replace(/[<>&]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;' }[c] as string));
+      const deliveryBlock = delivery && delivery.name
+        ? `
+          <p style="color:#333; margin:16px 0 6px;"><strong>Ship to:</strong></p>
+          <div style="background:#f9f9f9; padding:14px 16px; border-radius:4px; color:#1a110e; line-height:1.7;">
+            <strong>${esc(delivery.name)}</strong><br/>
+            ${esc(delivery.phone)}<br/>
+            ${esc(delivery.address)}<br/>
+            ${esc(delivery.city)}, ${esc(delivery.state)} &ndash; ${esc(delivery.pincode)}
+          </div>`
+        : '';
       const isTest = (process.env.RAZORPAY_KEY_ID || '').startsWith('rzp_test_');
       await resend.emails.send({
         from: 'Maneesha Chandran <onboarding@resend.dev>',
@@ -63,7 +74,8 @@ export async function POST(request: Request) {
             <div style="background:#f9f9f9; padding:15px; border-radius:4px; margin:16px 0; color:#1a110e;">
               ${itemsList}
             </div>
-            <p style="color:#333; margin:6px 0;"><strong>Amount:</strong> ${amountLine || '—'}</p>
+            ${deliveryBlock}
+            <p style="color:#333; margin:16px 0 6px;"><strong>Amount:</strong> ${amountLine || '—'}</p>
             <p style="color:#333; margin:6px 0;"><strong>Customer:</strong> ${payerLine || '—'}</p>
             <p style="color:#333; margin:6px 0;"><strong>Payment ID:</strong> ${razorpay_payment_id}</p>
             <p style="color:#333; margin:6px 0;"><strong>Order ID:</strong> ${razorpay_order_id}</p>

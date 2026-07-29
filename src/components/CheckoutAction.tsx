@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { CartItem } from '@/context/StoreContext';
+import type { Delivery } from '@/components/DeliveryDetails';
 
 declare global {
   interface Window { Razorpay?: any }
@@ -10,6 +11,9 @@ export interface CheckoutActionProps {
   standardItems?: CartItem[];
   customItems?: CartItem[];
   cartSubtotal: number;
+  delivery?: Delivery;
+  deliveryComplete?: boolean;
+  onNeedDelivery?: () => void;
   onSuccess: () => void;
 }
 
@@ -26,21 +30,28 @@ function loadRazorpay(): Promise<boolean> {
   });
 }
 
-export default function CheckoutAction({ cart, standardItems, customItems, cartSubtotal, onSuccess }: CheckoutActionProps) {
+export default function CheckoutAction({ cart, standardItems, customItems, cartSubtotal, delivery, deliveryComplete = true, onNeedDelivery, onSuccess }: CheckoutActionProps) {
   const [isProcessing, setIsProcessing] = useState(false);
   const [whatsappNumber, setWhatsappNumber] = useState('');
   const [error, setError] = useState('');
-  
+
   const hasStandard = !standardItems || standardItems.length > 0;
   const hasCustom = customItems && customItems.length > 0;
   const isMixedCart = hasStandard && hasCustom;
+  const needsDelivery = hasStandard && !deliveryComplete;
 
   const handleCheckoutClick = async () => {
+    // Readymade items need a shipping address before we can take payment.
+    if (hasStandard && !deliveryComplete) {
+      setError('Please add your delivery address above so we can courier your order.');
+      onNeedDelivery?.();
+      return;
+    }
     if (isMixedCart && !whatsappNumber.trim()) {
       setError('Please enter your WhatsApp number for the custom items.');
       return;
     }
-    
+
     setError('');
     setIsProcessing(true);
 
@@ -81,7 +92,10 @@ export default function CheckoutAction({ cart, standardItems, customItems, cartS
         name: 'Maneesha Chandran',
         description: 'Couture order',
         theme: { color: '#4B272D' },
-        prefill: whatsappNumber ? { contact: whatsappNumber } : {},
+        prefill: {
+          name: delivery?.name || undefined,
+          contact: delivery?.phone || whatsappNumber || undefined,
+        },
         handler: async (resp: any) => {
           // 3) Verify the payment signature server-side before confirming.
           try {
@@ -93,6 +107,7 @@ export default function CheckoutAction({ cart, standardItems, customItems, cartS
                 razorpay_payment_id: resp.razorpay_payment_id,
                 razorpay_signature: resp.razorpay_signature,
                 items: payItems.map((i) => ({ id: i.id, name: i.name, quantity: i.quantity, size: i.size })),
+                delivery: delivery || null,
               }),
             });
             const v = await vRes.json();
@@ -168,12 +183,22 @@ export default function CheckoutAction({ cart, standardItems, customItems, cartS
         <button
           onClick={handleCheckoutClick}
           disabled={isProcessing}
-          className="w-full py-4 rounded-full text-xs tracking-[0.2em] uppercase inline-block text-center cursor-pointer bg-maroon text-cream hover:bg-maroon-dark transition-all duration-300 disabled:opacity-70 disabled:cursor-wait"
+          aria-disabled={needsDelivery}
+          className={`w-full py-4 rounded-full text-xs tracking-[0.2em] uppercase inline-block text-center cursor-pointer transition-all duration-300 disabled:cursor-wait ${
+            needsDelivery
+              ? 'bg-charcoal/[0.08] text-charcoal/45 hover:bg-charcoal/[0.12]'
+              : 'bg-maroon text-cream hover:bg-maroon-dark disabled:opacity-70'
+          }`}
         >
           {isProcessing ? 'Processing Securely...' :
             (hasCustom ? 'Pay for Standard Items' : 'Pay Securely via Razorpay')
           }
         </button>
+      )}
+
+      {/* Soft hint until the delivery address is added */}
+      {needsDelivery && !error && (
+        <p className="text-center text-[11px] tracking-wide text-charcoal/50">Add your delivery address above to continue.</p>
       )}
 
       {/* Payment error (shown for standard-only carts too) */}

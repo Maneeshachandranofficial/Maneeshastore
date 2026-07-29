@@ -1,22 +1,41 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { Check } from 'lucide-react';
 import { useStore } from '@/context/StoreContext';
 import CheckoutAction from '@/components/CheckoutAction';
+import DeliveryDetails, { EMPTY_DELIVERY, isDeliveryComplete, type Delivery } from '@/components/DeliveryDetails';
 import { img } from '@/utils/img';
 
 export default function CheckoutPage() {
   const { cartItems, removeFromCart, clearCart } = useStore();
   const [isSuccess, setIsSuccess] = useState(false);
   const [customItemsData, setCustomItemsData] = useState<any[]>([]);
+  const [delivery, setDelivery] = useState<Delivery>(EMPTY_DELIVERY);
+  const [deliveryOpen, setDeliveryOpen] = useState(false);
 
   const priceOf = (item: any) => parseInt(item.price.replace(/[^\d]/g, ''), 10) || 0;
 
   const standardItems = cartItems.filter((item) => priceOf(item) > 0 && item.sizingType !== 'customise');
   const customItems = cartItems.filter((item) => priceOf(item) === 0 || item.sizingType === 'customise');
   const cartSubtotal = standardItems.reduce((total, item) => total + priceOf(item) * item.quantity, 0);
+  // Delivery is only required when there are readymade items to courier.
+  const deliveryComplete = standardItems.length === 0 || isDeliveryComplete(delivery);
+
+  // Once the address is complete, glide the customer up to the payment area so
+  // they don't have to scroll to find it. Fires once per completion.
+  const summaryRef = useRef<HTMLDivElement | null>(null);
+  const scrolledRef = useRef(false);
+  useEffect(() => {
+    if (standardItems.length === 0 || !deliveryOpen) return;
+    if (deliveryComplete && !scrolledRef.current) {
+      scrolledRef.current = true;
+      const t = setTimeout(() => summaryRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 350);
+      return () => clearTimeout(t);
+    }
+    if (!deliveryComplete) scrolledRef.current = false;
+  }, [deliveryComplete, deliveryOpen, standardItems.length]);
 
   const handleSuccess = () => {
     if (customItems.length > 0) setCustomItemsData(customItems);
@@ -165,10 +184,14 @@ export default function CheckoutPage() {
                   ))}
                 </div>
               )}
+
+              {standardItems.length > 0 && (
+                <DeliveryDetails value={delivery} onChange={setDelivery} open={deliveryOpen} onOpenChange={setDeliveryOpen} />
+              )}
             </div>
 
             {/* Summary */}
-            <div className="w-full flex-shrink-0 lg:w-[360px]">
+            <div ref={summaryRef} className="w-full flex-shrink-0 scroll-mt-28 lg:w-[360px]">
               <div className="rounded-2xl border border-charcoal/10 bg-ivory p-8 md:p-10">
                 <h2 className="mb-8 border-b border-charcoal/10 pb-5 font-sans text-sm uppercase tracking-[0.25em] text-gold-dark">Order Summary</h2>
                 <div className="space-y-4 text-[13.5px] text-charcoal/60">
@@ -195,6 +218,9 @@ export default function CheckoutPage() {
                   standardItems={standardItems}
                   customItems={customItems}
                   cartSubtotal={cartSubtotal}
+                  delivery={delivery}
+                  deliveryComplete={deliveryComplete}
+                  onNeedDelivery={() => setDeliveryOpen(true)}
                   onSuccess={handleSuccess}
                 />
                 <div className="mt-6 flex flex-col items-center gap-1">
