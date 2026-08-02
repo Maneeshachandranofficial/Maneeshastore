@@ -32,6 +32,7 @@ export default function ProductGallery({ images, name }: Props) {
 
   const triggerRef = useRef<HTMLButtonElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
   // A swipe ends in a click on touch devices; without this, flicking through
   // photos would keep throwing the viewer open.
   const didDragRef = useRef(false);
@@ -86,6 +87,24 @@ export default function ProductGallery({ images, name }: Props) {
       if (e.key === 'Escape') setIsViewerOpen(false);
       if (e.key === 'ArrowLeft') prev();
       if (e.key === 'ArrowRight') next();
+      if (e.key !== 'Tab') return;
+
+      // aria-modal only tells assistive tech focus is contained — it does not
+      // contain it. Without this, Tab walks out of the viewer onto the page
+      // still sitting behind the overlay.
+      const focusables = dialogRef.current?.querySelectorAll<HTMLElement>(
+        'button:not([disabled]), [href], [tabindex]:not([tabindex="-1"])'
+      );
+      if (!focusables?.length) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
     };
     window.addEventListener('keydown', onKeyDown);
     return () => {
@@ -200,6 +219,7 @@ export default function ProductGallery({ images, name }: Props) {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2, ease: EASE }}
+                ref={dialogRef}
                 onClick={closeViewer}
                 role="dialog"
                 aria-modal="true"
