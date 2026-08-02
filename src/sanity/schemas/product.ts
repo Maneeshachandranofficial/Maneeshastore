@@ -36,7 +36,7 @@ export default defineType({
       group: 'content',
       of: [{ type: 'image', options: { hotspot: true } }],
       description:
-        'Optional. Other angles of the same piece — back, side, close-ups of the work, the drape. On the product page customers move through these with the arrows (or by swiping) in the order shown here, after the main photo. Drag to reorder.',
+        'Optional, and there is no limit — add as many as you like (10, 15, more). Other angles of the same piece: back, side, close-ups of the work, the drape. On the product page customers move through these with the arrows (or by swiping) in the order shown here, after the main photo. You can select several files at once, and drag them to reorder.',
       options: { layout: 'grid' },
     }),
     defineField({

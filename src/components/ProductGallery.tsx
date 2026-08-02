@@ -334,7 +334,9 @@ function Dots({
   tone: 'dark' | 'light';
 }) {
   return (
-    <div className="flex items-center gap-2">
+    // Wraps rather than overflowing: the dot row fits one line up to ~14
+    // photos, and there is no cap on how many she can upload.
+    <div className="flex max-w-full flex-wrap items-center justify-center gap-2">
       {Array.from({ length: count }).map((_, i) => (
         <button
           key={i}
