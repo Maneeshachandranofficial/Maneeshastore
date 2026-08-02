@@ -39,14 +39,14 @@ export default function ProductClient({ product }: { product: any }) {
   };
 
   return (
-    <div className="bg-cream min-h-screen pt-48 md:pt-[12.5rem] pb-32">
+    <div className="bg-cream min-h-screen pt-48 md:pt-[11.5rem] pb-32">
       <div className="max-w-7xl mx-auto px-6">
 
         {/* Breadcrumb */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="pb-12 flex items-center gap-3 text-xs tracking-widest uppercase text-charcoal/50 font-sans"
+          className="pb-6 flex items-center gap-3 text-xs tracking-widest uppercase text-charcoal/50 font-sans"
         >
           <Link href="/" className="hover:text-charcoal transition-colors flex items-center gap-1">
             <ArrowLeft className="w-3 h-3" /> Home
