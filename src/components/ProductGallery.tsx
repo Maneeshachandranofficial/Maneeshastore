@@ -32,23 +32,38 @@ export default function ProductGallery({ images, name }: Props) {
 
   const triggerRef = useRef<HTMLButtonElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
+  // A swipe ends in a click on touch devices; without this, flicking through
+  // photos would keep throwing the viewer open.
+  const didDragRef = useRef(false);
 
   const count = images.length;
   const canPrev = index > 0;
   const canNext = index < count - 1;
 
   const go = useCallback(
-    (next: number) => {
+    (target: number) => {
       setSlide(([current]) => {
-        const clamped = Math.max(0, Math.min(count - 1, next));
+        const clamped = Math.max(0, Math.min(count - 1, target));
         return [clamped, clamped > current ? 1 : -1];
       });
     },
     [count]
   );
 
-  const prev = useCallback(() => go(index - 1), [go, index]);
-  const next = useCallback(() => go(index + 1), [go, index]);
+  // Step relative to whatever slide is current *now*, not the one captured at
+  // render — otherwise held arrow keys and fast clicks land on the same target.
+  const step = useCallback(
+    (delta: number) => {
+      setSlide(([current]) => [
+        Math.max(0, Math.min(count - 1, current + delta)),
+        delta > 0 ? 1 : -1,
+      ]);
+    },
+    [count]
+  );
+
+  const prev = useCallback(() => step(-1), [step]);
+  const next = useCallback(() => step(1), [step]);
 
   // Warm the neighbouring photos so an arrow press swaps instantly.
   useEffect(() => {
@@ -78,6 +93,14 @@ export default function ProductGallery({ images, name }: Props) {
       window.removeEventListener('keydown', onKeyDown);
     };
   }, [isViewerOpen, prev, next]);
+
+  const openViewer = useCallback(() => {
+    if (didDragRef.current) {
+      didDragRef.current = false;
+      return;
+    }
+    setIsViewerOpen(true);
+  }, []);
 
   const closeViewer = useCallback(() => {
     setIsViewerOpen(false);
@@ -122,13 +145,19 @@ export default function ProductGallery({ images, name }: Props) {
                 drag={count > 1 ? 'x' : false}
                 dragConstraints={{ left: 0, right: 0 }}
                 dragElastic={0.16}
+                onDragStart={() => {
+                  didDragRef.current = false;
+                }}
+                onDrag={(_, info) => {
+                  if (Math.abs(info.offset.x) > 6) didDragRef.current = true;
+                }}
                 onDragEnd={(_, info) => onSwipe(info.offset.x, info.velocity.x)}
                 className="absolute inset-0"
               >
                 <button
                   ref={triggerRef}
                   type="button"
-                  onClick={() => setIsViewerOpen(true)}
+                  onClick={openViewer}
                   aria-label={`View ${altFor(name, index)} larger`}
                   className="h-full w-full cursor-zoom-in"
                 >
@@ -179,7 +208,7 @@ export default function ProductGallery({ images, name }: Props) {
               >
                 <div className="flex items-center justify-between px-5 py-5 md:px-8">
                   <span className="font-sans text-[11px] uppercase tracking-[0.2em] text-white/55">
-                    {index + 1} / {count}
+                    {count > 1 ? `${index + 1} / ${count}` : ''}
                   </span>
                   <button
                     ref={closeRef}
@@ -192,10 +221,10 @@ export default function ProductGallery({ images, name }: Props) {
                   </button>
                 </div>
 
-                <div
-                  className="relative flex min-h-0 flex-1 items-center justify-center px-4 pb-4 md:px-20"
-                  onClick={(e) => e.stopPropagation()}
-                >
+                {/* No stopPropagation here: clicking the empty space beside the
+                    photo should close, like any lightbox. The image, arrows and
+                    dots stop it themselves. */}
+                <div className="relative flex min-h-0 flex-1 items-center justify-center px-4 pb-4 md:px-20">
                   <AnimatePresence initial={false} custom={direction}>
                     <motion.img
                       key={index}
@@ -209,6 +238,7 @@ export default function ProductGallery({ images, name }: Props) {
                       dragConstraints={{ left: 0, right: 0 }}
                       dragElastic={0.16}
                       onDragEnd={(_, info) => onSwipe(info.offset.x, info.velocity.x)}
+                      onClick={(e) => e.stopPropagation()}
                       src={img(images[index], 2000, 88)}
                       srcSet={imgSrcSet(images[index], [900, 1300, 1600, 2000], 88)}
                       sizes="100vw"
